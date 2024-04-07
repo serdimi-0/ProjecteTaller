@@ -1,0 +1,37 @@
+1 - Docker network create <nom-xarxa>
+2 - para cada contenedor, al crearlo
+	-p <numPortLocal>:<numPortContenidor>
+3 - para cada contenedor un volume
+	--volume <nomVolumJaExistent>:<ubicació>
+
+
+docker jasper
+1- crear net
+	docker network create projecte-network
+2- crear volumen mariadb
+	docker volume create --name mariadb_data
+3- crear contenedor mariadb
+	docker run -d --name mariadb --env ALLOW_EMPTY_PASSWORD=yes
+	--env MARIADB_USER=bn_jasperreports
+	--env MARIADB_PASSWORD=bitnami
+	--env MARIADB_DATABASE=bitnami_jasperreports
+	--network projecte-network
+	--volume mariadb_data:/bitnami/mariadb bitnami/mariadb:latest
+4- crear volumen jasper
+	docker volume create --name jasperreports_data
+5- crear contenedor jasper
+	docker run -d --name jasperreports -p 8080:8080 -p 8443:8443
+	--env JASPERREPORTS_DATABASE_USER=bn_jasperreports
+	--env JASPERREPORTS_DATABASE_PASSWORD=bitnami
+	--env JASPERREPORTS_DATABASE_NAME=bitnami_jasperreports
+	--network projecte-network
+	--volume jasperreports_data:/bitnami/jasperreports
+	bitnami/jasperreports:latest
+	
+docker mongo
+	docker volume create --name mongodb_data
+	
+	docker run -d --name mongodb-server -p 27017:27017
+	--network projecte-network
+	--volume mongodb_data:/bitnami/mongodb
+	bitnami/mongodb:latest

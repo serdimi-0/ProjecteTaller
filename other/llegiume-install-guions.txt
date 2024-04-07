@@ -1,0 +1,37 @@
+-----------------------------------
+--	IMPORTACIÓ DE MODELS	---
+-----------------------------------
+
+Per importar la llista de models des del csv he fet servir l'script:
+	1_import_models.ipynb
+
+Es tracta d'un Python Notebook, per visualitzar el seu contingut de manera més accesible, visualitzar:
+	1_import_models_output.html
+
+EXECUCIÓ:
+	
+	·Requeriments:
+	1. Python (instal·lar última versió des de la web oficial)
+	2. Paquet pandas (pip install pandas)
+	3. Paquet pymongo (pip install pymongo)
+	4. Paquet JupyterLab o similiar (pip install jupyterlab)
+
+	·Recomanacions:
+	Eliminar col·lecció 'models' de la BD 'taller' abans d'executar.
+	db.collections.drop('models')
+
+	·Procés
+	1. Obrir una terminal i escriure 'jupyter-lab'
+	2. Dins de l'entorn, navegar a 'C:\Users\isard\Desktop\Tasca2 Part1\'
+	3. Executar el notebook
+	NOTA: si no es disposa del paquet 'pyarrow' la primera cel·la donará un warning, però funcionarà
+
+
+-----------------------------------
+--	  DADES INICIALS	---
+-----------------------------------
+
+Es proporciona un script en JavaScript per inserir totes les dades inicials.
+Per executar-lo, obrim una shell de MongoDB i executem:
+	use taller
+	load('C:/Users/isard/Desktop/DiazMartinSergio_Tasca2Part1/2_guio_emplenat.js')

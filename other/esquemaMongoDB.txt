@@ -1,0 +1,47 @@
+Usuaris
+	- login: string
+	- password: string
+	- tipus: string ['admin','mecanic', 'recepcio']
+
+Models
+	- model: string
+   
+Packs
+	- descripcio: string
+	- preu: number
+   
+Clients
+	- nif: string
+	- nom: string
+	- cognoms: string
+	- telefon: string
+	- adreça: string
+	- vehicles: array
+		- matricula: string
+		- km: number
+		- model: string
+		- marca: string
+   
+Reparacions
+	- estat: string ['oberta', 'tancada', 'rebutjada']
+	- data: date
+	- vehicle_id: string (FK de Vehicle(matricula))
+	- linies: array
+		- numero: string
+		- descripció: string
+		- tipus: string ['feina', 'peça', 'pack', 'altres']
+		- preu_total: number
+		- descompte: number
+		- codi_fabricant [peça]: string
+		- preu_unitat [peça]: number
+		- unitats_usades [peça]: number
+		- hores [feina]: number
+	- factura: string (FK de Factura(numero))
+
+
+Factures
+	- numero: string
+	- estat: string ['pagada', 'pendent']
+	- data: date
+	- tipus_IVA: string
+	- preu_ma_obra: number

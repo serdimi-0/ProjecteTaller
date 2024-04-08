@@ -10,7 +10,9 @@ namespace InterficiePersistencia
         /// <param name="username">Nom d'usuari</param>
         /// <param name="password">Contrasenya de l'usuari</param>
         /// <returns></returns>
-        Usuari verificarUsuari(String username, String password);
+        Usuari? verificarUsuari(String username, String password);
+
+        List<Reparacio>? obtenirReparacions();
 
         /// <summary>
         /// Tanca la capa de persistència

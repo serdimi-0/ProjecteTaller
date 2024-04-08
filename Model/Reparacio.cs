@@ -9,7 +9,8 @@ namespace Model
     public enum EstatReparacio
     {
         OBERTA,
-        TANCADA
+        TANCADA,
+        FACTURADA
     }
 
     public class Reparacio
@@ -17,16 +18,24 @@ namespace Model
         private string vehicleId;
         private EstatReparacio estat;
         private DateTime data;
+        private int numeroLinies;
 
-        public Reparacio(string vehicleId, EstatReparacio estat, DateTime data)
+        public Reparacio(string vehicleId, EstatReparacio estat, DateTime data, int numeroLinies)
         {
             this.vehicleId = vehicleId;
             this.estat = estat;
             this.data = data;
+            this.numeroLinies = numeroLinies;
         }
 
         public string VehicleId { get => vehicleId; set => vehicleId = value; }
         public EstatReparacio Estat { get => estat; set => estat = value; }
         public DateTime Data { get => data; set => data = value; }
+        public int NumeroLinies { get => numeroLinies; set => numeroLinies = value; }
+
+        public override string ToString()
+        {
+            return $"REPARACIÓ {vehicleId}: estat {estat}, data {data}, numero de línies {numeroLinies}";
+        }
     }
 }

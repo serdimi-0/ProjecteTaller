@@ -30,7 +30,7 @@
             <Label Margin="0 0 0 10" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="0" Content="Nom d'usuari"/>
             <TextBox x:Name="txbLogin" VerticalAlignment="Center" Padding="5 5 5 5" Margin="0 0 0 10" HorizontalAlignment="Left" Width="200" Grid.Row="0" Grid.Column="1"/>
             <Label HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0" Content="Contrasenya"/>
-            <PasswordBox x:Name="txbPassword" VerticalAlignment="Center" Padding="5 5 5 5" HorizontalAlignment="Left" Width="200" Grid.Row="1" Grid.Column="1"/>
+            <PasswordBox x:Name="txbPassword" KeyDown="txbPassword_KeyDown" VerticalAlignment="Center" Padding="5 5 5 5" HorizontalAlignment="Left" Width="200" Grid.Row="1" Grid.Column="1"/>
         </Grid>
 
         <Button Width="100" x:Name="btnLogin" Content="Login" Click="btnLogin_Click"/>

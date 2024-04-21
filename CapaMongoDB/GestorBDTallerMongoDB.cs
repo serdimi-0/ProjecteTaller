@@ -1,4 +1,5 @@
 ﻿using InterficiePersistencia;
+using Microsoft.VisualBasic;
 using Model;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -45,16 +46,16 @@ namespace CapaMongoDB
             string tipus = usuariBson["tipus"].AsString;
             switch (tipus)
             {
-                case "ADMIN":
+                case "admin":
                     usuari.Tipus = TipusUsuari.ADMIN;
                     break;
-                case "MECANIC":
+                case "mecanic":
                     usuari.Tipus = TipusUsuari.MECANIC;
                     break;
-                case "RECEPCIO":
+                case "recepcio":
                     usuari.Tipus = TipusUsuari.RECEPCIO;
                     break;
-            }  
+            }
             return usuari;
         }
 
@@ -88,6 +89,24 @@ namespace CapaMongoDB
                 reparacionsList.Add(reparacio);
             }
             return reparacionsList;
+        }
+
+        public Vehicle obtenirVehicle(string matricula)
+        {
+            var clients = db.GetCollection<BsonDocument>("clients");
+
+            var filter = Builders<BsonDocument>.Filter.ElemMatch<BsonDocument>("vehicles", Builders<BsonDocument>.Filter.Eq("matricula", matricula));
+
+            // Proyección para obtener solo el primer elemento del array de vehículos que coincida
+            var projection = Builders<BsonDocument>.Projection.Include("vehicles.$").Exclude("_id");
+
+            // Realizar la consulta
+            var result = clients.Find(filter).Project(projection).FirstOrDefault();
+
+            var vehicle = result["vehicles"][0].AsBsonDocument;
+
+
+            return new Vehicle(matricula, vehicle["model"].AsString, vehicle["km"].AsInt32);
         }
 
         private void comprovaConnexió()

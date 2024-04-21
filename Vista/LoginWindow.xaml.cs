@@ -59,6 +59,19 @@ namespace Vista
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
+            login();
+        }
+
+        private void txbPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                login();
+            }
+        }
+
+        private void login()
+        {
             string login = txbLogin.Text;
             string password = txbPassword.Password;
 
@@ -71,10 +84,9 @@ namespace Vista
                 }
                 else
                 {
-                    // navigate to ReparacionsWindow
                     ReparacionsWindow reparacionsWindow = new ReparacionsWindow(usuari, cp);
                     reparacionsWindow.Show();
-                    this.Close();
+                    Close();
                 }
             }
         }

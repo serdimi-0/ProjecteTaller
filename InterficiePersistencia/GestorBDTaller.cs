@@ -14,6 +14,8 @@ namespace InterficiePersistencia
 
         List<Reparacio>? obtenirReparacions();
 
+        Vehicle obtenirVehicle(string matricula);
+
         /// <summary>
         /// Tanca la capa de persistència
         /// </summary>

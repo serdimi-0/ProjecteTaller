@@ -32,6 +32,7 @@ namespace Model
         public EstatReparacio Estat { get => estat; set => estat = value; }
         public DateTime Data { get => data; set => data = value; }
         public int NumeroLinies { get => numeroLinies; set => numeroLinies = value; }
+        public string Model { get; set; }
 
         public override string ToString()
         {

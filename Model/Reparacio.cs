@@ -33,6 +33,7 @@ namespace Model
         public DateTime Data { get => data; set => data = value; }
         public int NumeroLinies { get => numeroLinies; set => numeroLinies = value; }
         public string Model { get; set; }
+        public string DataString { get => data.ToString("dd/MM/yyyy"); }
 
         public override string ToString()
         {

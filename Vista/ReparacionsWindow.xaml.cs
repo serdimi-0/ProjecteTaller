@@ -24,6 +24,9 @@ namespace Vista
         Usuari usuari;
         GestorBDTaller cp;
         List<Reparacio> reparacions;
+        bool reparacionsCarregades = false;
+        string cercaFiltre, ordreFiltre;
+
 
         public ReparacionsWindow(Usuari usuari, GestorBDTaller cp)
         {
@@ -41,19 +44,20 @@ namespace Vista
             {
                 r.Model = cp.obtenirVehicle(r.VehicleId).Model;
             }
+            reparacionsCarregades = true;
 
             switch (usuari.Tipus)
             {
                 case TipusUsuari.MECANIC:
                     opcionsMostrar.Visibility = Visibility.Collapsed;
-                    lsvReparacions.ItemsSource = reparacions.Where(r => r.Estat == EstatReparacio.OBERTA);
+                    lsvReparacions.ItemsSource = reparacions.Where(r => r.Estat == EstatReparacio.OBERTA).OrderBy(r => r.Data);
                     break;
                 case TipusUsuari.ADMIN:
                     cbMostrar.SelectedIndex = 0;
-                    lsvReparacions.ItemsSource = reparacions;
+                    lsvReparacions.ItemsSource = reparacions.OrderBy(r => r.Data);
                     break;
                 case TipusUsuari.RECEPCIO:
-                    lsvReparacions.ItemsSource = reparacions.Where(r => r.Estat == EstatReparacio.TANCADA);
+                    lsvReparacions.ItemsSource = reparacions.Where(r => r.Estat == EstatReparacio.TANCADA).OrderBy(r => r.Data);
                     break;
             }
 
@@ -61,34 +65,54 @@ namespace Vista
 
         private void updateList()
         {
-            /* El contingut de la llista depen de tres variables:
-             1- el contingut del textbox de cerca
-             2- la opció d'ordenació seleccionada
-             3- el filtre seleccionat*/
-
-            string cerca = txtSearch.Text;
-            int opcioOrdre = cbOrdre.SelectedIndex;
-            int opcioMostrar = cbMostrar.SelectedIndex;
+            ordreFiltre = cbOrdre.Text;
+            cercaFiltre = txtSearch.Text;
 
             IEnumerable<Reparacio> reparacionsFiltrades = reparacions;
-            reparacionsFiltrades = reparacionsFiltrades.Where(r => r.Model.Contains(cerca));
-            
+            switch (cbMostrar.SelectedIndex)
+            {
+                case 0:
+                    break;
+                case 1:
+                    reparacionsFiltrades = reparacionsFiltrades.Where(r => r.Estat == EstatReparacio.OBERTA);
+                    break;
+                case 2:
+                    reparacionsFiltrades = reparacionsFiltrades.Where(r => r.Estat == EstatReparacio.TANCADA);
+                    break;
+                case 3:
+                    reparacionsFiltrades = reparacionsFiltrades.Where(r => r.Estat == EstatReparacio.FACTURADA);
+                    break;
+            }
 
+            if (cercaFiltre != "")
+            {
+                reparacionsFiltrades = reparacionsFiltrades.Where(r => r.VehicleId.ToLower().Contains(cercaFiltre.ToLower()) || r.Model.ToLower().Contains(cercaFiltre.ToLower()));
+            }
+
+            if (ordreFiltre.Contains("asc"))
+                reparacionsFiltrades = reparacionsFiltrades.OrderByDescending(r => r.Data);
+            else
+                reparacionsFiltrades = reparacionsFiltrades.OrderBy(r => r.Data);
+
+            lsvReparacions.ItemsSource = reparacionsFiltrades;
         }
 
         private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            updateList();
+            if (reparacionsCarregades)
+                updateList();
         }
 
         private void cbOrdre_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            updateList();
+            if (reparacionsCarregades)
+                updateList();
         }
 
         private void cbMostrar_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            updateList();
+            if (reparacionsCarregades)
+                updateList();
         }
     }
 }

@@ -32,20 +32,18 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Margin="0 0 50 0" Orientation="Horizontal">
+            <StackPanel HorizontalAlignment="Left"  Margin="0 0 50 0" Orientation="Horizontal">
                 <Label VerticalAlignment="Center" Content="Cerca:"/>
                 <TextBox x:Name="txtSearch" TextChanged="txtSearch_TextChanged" Width="200" Height="30" VerticalContentAlignment="Center"/>
             </StackPanel>
-            <StackPanel Margin="0 0 50 0" Grid.Column="1" Orientation="Horizontal">
+            <StackPanel HorizontalAlignment="Center" Margin="0 0 50 0" Grid.Column="1" Orientation="Horizontal">
                 <Label VerticalAlignment="Center" Content="Ordena per:"/>
-                <ComboBox x:Name="cbOrdre" SelectionChanged="cbOrdre_SelectionChanged" Width="100" Height="30" VerticalContentAlignment="Center">
-                    <ComboBoxItem Content="Data (asc.)" IsSelected="True"/>
-                    <ComboBoxItem Content="Data (desc.)"/>
-                    <ComboBoxItem Content="Matrícula (asc.)"/>
-                    <ComboBoxItem Content="Matrícula (desc.)"/>
+                <ComboBox x:Name="cbOrdre" SelectionChanged="cbOrdre_SelectionChanged" Width="110" Height="30" VerticalContentAlignment="Center">
+                    <ComboBoxItem Content="Data ascendent (d'antigues a noves)" IsSelected="True"/>
+                    <ComboBoxItem Content="Data descendent (de noves a antigues)"/>
                 </ComboBox>
             </StackPanel>
-            <StackPanel x:Name="opcionsMostrar" Grid.Column="2" Orientation="Horizontal">
+            <StackPanel HorizontalAlignment="Right" x:Name="opcionsMostrar" Grid.Column="2" Orientation="Horizontal">
                 <Label VerticalAlignment="Center" Content="Mostra:"/>
                 <ComboBox SelectionChanged="cbMostrar_SelectionChanged" x:Name="cbMostrar" Width="200" Height="30" VerticalContentAlignment="Center">
                     <ComboBoxItem Content="Totes"/>

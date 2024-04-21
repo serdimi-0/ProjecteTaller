@@ -26,7 +26,7 @@
                 <StackPanel Grid.Row="1" Orientation="Horizontal">
                     <StackPanel Width="240" Orientation="Horizontal">
                         <Label Content="Data:" FontWeight="Bold" FontSize="12" Margin="10"/>
-                        <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=ucRepRoot, Path=myReparacio.Data}" FontSize="12" Margin="10"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=ucRepRoot, Path=myReparacio.DataString}" FontSize="12" Margin="10"/>
                     </StackPanel>
                     <StackPanel Width="150" Orientation="Horizontal">
                         <Label Content="Linies:" FontWeight="Bold" FontSize="12" Margin="10"/>

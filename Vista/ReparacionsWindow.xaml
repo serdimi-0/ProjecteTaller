@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="ReparacionsWindow" Height="600" Width="1100"
         Loaded="Window_Loaded">
-    <Grid Background="#ebf2f2">
+    <Grid Background="#fff">
         <Grid Width="1000" Margin="0 20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -55,7 +55,7 @@
             </Grid>
 
 
-            <ListView BorderBrush="#3e608c" x:Name="lsvReparacions" Margin="0 10 0 10" Grid.Row="3" HorizontalContentAlignment="Stretch">
+            <ListView SelectionChanged="lsvReparacions_SelectionChanged" BorderBrush="#3e608c" x:Name="lsvReparacions" Margin="0 10 0 10" Grid.Row="3" HorizontalContentAlignment="Stretch">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <local:ReparacioUC myReparacio="{Binding}"/>

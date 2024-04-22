@@ -16,6 +16,8 @@ namespace InterficiePersistencia
 
         Vehicle obtenirVehicle(string matricula);
 
+        Reparacio obtenirLinies(Reparacio reparacio);
+
         /// <summary>
         /// Tanca la capa de persistència
         /// </summary>

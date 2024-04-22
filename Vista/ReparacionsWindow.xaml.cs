@@ -30,6 +30,7 @@ namespace Vista
 
         public ReparacionsWindow(Usuari usuari, GestorBDTaller cp)
         {
+            WindowState = WindowState.Maximized;
             this.usuari = usuari;
             this.cp = cp;
             InitializeComponent();
@@ -37,6 +38,7 @@ namespace Vista
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+
             lblUser.Content = "Usuari: " + usuari.Login;
 
             reparacions = cp.obtenirReparacions();
@@ -107,6 +109,17 @@ namespace Vista
         {
             if (reparacionsCarregades)
                 updateList();
+        }
+
+        private void lsvReparacions_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Reparacio reparacio = (Reparacio)lsvReparacions.SelectedItem;
+            if (reparacio == null)
+                return;
+            ReparacioWindow reparacioWindow = new ReparacioWindow(reparacio, cp);
+            reparacioWindow.Owner = this;
+            reparacioWindow.ShowDialog();
+            lsvReparacions.UnselectAll();
         }
 
         private void cbMostrar_SelectionChanged(object sender, SelectionChangedEventArgs e)

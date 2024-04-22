@@ -27,12 +27,12 @@ namespace Vista
 
         public LoginWindow()
         {
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
             try
             {
 

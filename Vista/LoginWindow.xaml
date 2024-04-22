@@ -9,31 +9,32 @@
         FontFamily="Tahoma"
         Loaded="Window_Loaded"
         Background="#ebf2f2">
+    <Grid Background="#ebf2f2">
+        <StackPanel Margin="0 0 0 30" Orientation="Vertical" VerticalAlignment="Center">
 
-    <StackPanel Margin="0 0 0 30" Orientation="Vertical" VerticalAlignment="Center">
+            <StackPanel Margin="0 0 0 20" HorizontalAlignment="Center" Orientation="Horizontal">
+                <Image Source="/Assets/Logo.png" Width="60" Height="60"/>
+                <Label Foreground="#3e608c" VerticalAlignment="Center" Content="GarageApp" FontWeight="Black" FontSize="30"/>
+            </StackPanel>
 
-        <StackPanel Margin="0 0 0 20" HorizontalAlignment="Center" Orientation="Horizontal">
-            <Image Source="/Assets/Logo.png" Width="60" Height="60"/>
-            <Label Foreground="#3e608c" VerticalAlignment="Center" Content="GarageApp" FontWeight="Black" FontSize="30"/>
+            <Grid Margin="0 0 0 20" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label Margin="0 0 0 10" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="0" Content="Nom d'usuari"/>
+                <TextBox x:Name="txbLogin" VerticalAlignment="Center" Padding="5 5 5 5" Margin="0 0 0 10" HorizontalAlignment="Left" Width="200" Grid.Row="0" Grid.Column="1"/>
+                <Label HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0" Content="Contrasenya"/>
+                <PasswordBox x:Name="txbPassword" KeyDown="txbPassword_KeyDown" VerticalAlignment="Center" Padding="5 5 5 5" HorizontalAlignment="Left" Width="200" Grid.Row="1" Grid.Column="1"/>
+            </Grid>
+
+            <Button Background="#3e608c" Foreground="White" Width="100" x:Name="btnLogin" Content="Login" Click="btnLogin_Click"/>
+
         </StackPanel>
-
-        <Grid Margin="0 0 0 20" HorizontalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <Label Margin="0 0 0 10" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="0" Content="Nom d'usuari"/>
-            <TextBox x:Name="txbLogin" VerticalAlignment="Center" Padding="5 5 5 5" Margin="0 0 0 10" HorizontalAlignment="Left" Width="200" Grid.Row="0" Grid.Column="1"/>
-            <Label HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0" Content="Contrasenya"/>
-            <PasswordBox x:Name="txbPassword" KeyDown="txbPassword_KeyDown" VerticalAlignment="Center" Padding="5 5 5 5" HorizontalAlignment="Left" Width="200" Grid.Row="1" Grid.Column="1"/>
-        </Grid>
-
-        <Button Width="100" x:Name="btnLogin" Content="Login" Click="btnLogin_Click"/>
-
-    </StackPanel>
+    </Grid>
 </Window>

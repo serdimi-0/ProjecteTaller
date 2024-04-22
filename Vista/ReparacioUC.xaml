@@ -9,7 +9,7 @@
               Foreground="#3e608c"
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <Border BorderBrush="Black" CornerRadius="20">
+    <Border Background="#ebf2f2">
 
         <StackPanel Orientation="Horizontal">
             <Image Source="/Assets/icon_reparacio.png" Width="50" Height="50" Margin="10"/>

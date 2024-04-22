@@ -35,7 +35,7 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <Button Margin="0 0 30 0" Content="Afegir línia" Grid.Row="1" Width="200"/>
+                <Button Foreground="White" Background="#3e608c" Padding="5" Margin="0 0 30 0" Content="Afegir línia" Grid.Row="1" Width="150"/>
             </Grid>
 
             <Grid Grid.Row="1" Grid.Column="1">
@@ -88,7 +88,7 @@
 
                 <TextBlock x:Name="txbData" Grid.Row="2" Text="-" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="25" FontWeight="Black" Foreground="#3e608c"/>
 
-                <Button Content="Tancar reparació" Grid.Row="3" Width="150" VerticalAlignment="Bottom"/>
+                <Button Padding="5" Foreground="White" Focusable="False" Background="#3e608c" Content="Tancar reparació" Grid.Row="3" Width="150" VerticalAlignment="Bottom"/>
 
             </Grid>
 

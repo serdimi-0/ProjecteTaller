@@ -170,6 +170,25 @@ namespace CapaMongoDB
             return new Vehicle(matricula, vehicle["model"].AsString, vehicle["km"].AsInt32);
         }
 
+        public List<Client> obtenirClients()
+        {
+            var clients = db.GetCollection<BsonDocument>("clients");
+            var clientsBson = clients.Find(new BsonDocument()).ToList();
+            List<Client> clientsList = new List<Client>();
+            foreach (var clientBson in clientsBson)
+            {
+                string id = clientBson["_id"].AsObjectId.ToString();
+                string nom = clientBson["nom"].AsString;
+                string cognoms = clientBson["cognoms"].AsString;
+                string dni = clientBson["nif"].AsString;
+                string adreça = clientBson["adreça"].AsString;
+                string telefon = clientBson["telefon"].AsString;
+                List<Vehicle> vehicles = new List<Vehicle>();
+                clientsList.Add(new Client(id, dni, nom, cognoms, telefon, adreça));
+            }
+            return clientsList;
+        }
+
         private void comprovaConnexió()
         {
             CancellationTokenSource cts = new CancellationTokenSource();

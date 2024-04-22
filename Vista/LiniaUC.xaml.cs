@@ -43,7 +43,7 @@ namespace Vista
             switch (myLinia.Tipus)
             {
                 case TipusLinia.FEINA:
-                    lblQuantitat.Content = "Hores";
+                    lblQuantitat.Content = "Hores:";
                     quantitatContainer.Visibility = Visibility.Visible;
                     codiFabricantContainer.Visibility = Visibility.Collapsed;
                     preuUnitariContainer.Visibility = Visibility.Collapsed;

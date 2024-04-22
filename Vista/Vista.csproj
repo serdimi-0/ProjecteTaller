@@ -8,16 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Assets\bg.png" />
-    <None Remove="Assets\bg2.png" />
     <None Remove="Assets\car.png" />
     <None Remove="Assets\icon_reparacio.png" />
     <None Remove="Assets\logo.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Assets\bg.png" />
-    <Resource Include="Assets\bg2.png" />
     <Resource Include="Assets\car.png" />
     <Resource Include="Assets\icon_reparacio.png" />
   </ItemGroup>

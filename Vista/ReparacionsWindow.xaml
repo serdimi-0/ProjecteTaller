@@ -63,7 +63,7 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-            <Button Background="#ebf2f2" Grid.Row="4" Content="Afegir reparació" Width="150" Margin="0 20 0 20" Height="30"/>
+            <Button Background="#3e608c" Foreground="#fff" Padding="5" x:Name="btnAfegir" Click="btnAfegir_Click" Grid.Row="4" Content="Afegir reparació" Width="150" Margin="0 20 0 20" Height="30"/>
 
         </Grid>
     </Grid>

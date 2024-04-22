@@ -122,6 +122,13 @@ namespace Vista
             lsvReparacions.UnselectAll();
         }
 
+        private void btnAfegir_Click(object sender, RoutedEventArgs e)
+        {
+            SeleccioClientWindow crearReparacioWindow = new SeleccioClientWindow(cp);
+            crearReparacioWindow.Owner = this;
+            crearReparacioWindow.ShowDialog();
+        }
+
         private void cbMostrar_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (reparacionsCarregades)

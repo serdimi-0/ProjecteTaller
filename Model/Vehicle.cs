@@ -22,5 +22,13 @@ namespace Model
         public string Matricula { get => matricula; set => matricula = value; }
         public string Model { get => model; set => model = value; }
         public int Km { get => km; set => km = value; }
+
+        public string kmString
+        {
+            get
+            {
+                return km.ToString() + " km";
+            }
+        }
     }
 }

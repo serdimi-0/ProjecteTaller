@@ -18,6 +18,8 @@ namespace InterficiePersistencia
 
         Reparacio obtenirLinies(Reparacio reparacio);
 
+        List<Client> obtenirClients();
+
         /// <summary>
         /// Tanca la capa de persistència
         /// </summary>

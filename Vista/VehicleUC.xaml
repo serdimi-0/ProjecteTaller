@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="Vista.VehicleUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Vista"
+             mc:Ignorable="d" 
+             x:Name="vehicleUcRoot"
+             d:DesignHeight="200" d:DesignWidth="300">
+    <Grid Background="#3e608c">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel HorizontalAlignment="Center" Margin="0 20" Orientation="Horizontal">
+            <Image Margin="0 0 10 0" Source="/Assets/car.png" Width="30" Height="30"/>
+            <Label Margin="0 0 10 0" Foreground="White" VerticalAlignment="Center" Content="{Binding ElementName=vehicleUcRoot, Path=myVehicle.Matricula}" FontWeight="Black" FontSize="15"/>
+        </StackPanel>
+
+        <TextBlock Foreground="White" Margin="10 0" FontSize="15" TextAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="{Binding ElementName=vehicleUcRoot, Path=myVehicle.Model}" VerticalAlignment="Center"/>
+
+        <StackPanel HorizontalAlignment="Center" Grid.Row="2" Margin="0 20" Orientation="Horizontal">
+            <Label Margin="0 0 10 0" Foreground="White" VerticalAlignment="Center" Content="Kilometratge:" FontWeight="Black" FontSize="15"/>
+            <Label Margin="0 0 10 0" Foreground="White" VerticalAlignment="Center" Content="{Binding ElementName=vehicleUcRoot, Path=myVehicle.kmString}" FontSize="15"/>
+        </StackPanel>
+
+    </Grid>
+
+</UserControl>

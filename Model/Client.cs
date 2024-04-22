@@ -8,6 +8,7 @@ namespace Model
 {
     public class Client
     {
+        private string id;
         private string nif;
         private string nom;
         private string cognoms;
@@ -15,8 +16,9 @@ namespace Model
         private string direccio;
         private List<Vehicle> vehicles;
 
-        public Client(string nif, string nom, string cognoms, string telefon, string direccio)
+        public Client(string id, string nif, string nom, string cognoms, string telefon, string direccio)
         {
+            this.id = id;
             this.nif = nif;
             this.nom = nom;
             this.cognoms = cognoms;
@@ -25,6 +27,7 @@ namespace Model
             vehicles = new List<Vehicle>();
         }
 
+        public string Id { get => id; set => id = value; }
         public string Nif { get => nif; set => nif = value; }
         public string Nom { get => nom; set => nom = value; }
         public string Cognoms { get => cognoms; set => cognoms = value; }

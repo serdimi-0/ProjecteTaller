@@ -21,12 +21,14 @@ namespace Vista
     /// </summary>
     public partial class SeleccioClientWindow : Window
     {
+        Usuari usuari;
         GestorBDTaller cp;
         List<Client> clients;
 
-        public SeleccioClientWindow(GestorBDTaller cp)
+        public SeleccioClientWindow(Usuari usuari, GestorBDTaller cp)
         {
             WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            this.usuari = usuari;
             this.cp = cp;
             clients = cp.obtenirClients();
             InitializeComponent();
@@ -48,6 +50,12 @@ namespace Vista
                 return;
             }
             Client client = (Client)dtgClients.SelectedItem;
+            cp.obtenirVehicles(client);
+            SeleccioVehicleWindow svw = new SeleccioVehicleWindow(client, usuari, cp);
+            svw.Owner = Owner;
+            svw.Show();
+            Close();
+
         }
 
         private void txbCerca_TextChanged(object sender, TextChangedEventArgs e)

@@ -51,6 +51,7 @@ namespace Vista
             switch (usuari.Tipus)
             {
                 case TipusUsuari.MECANIC:
+                    cbMostrar.SelectedIndex = 1;
                     opcionsMostrar.Visibility = Visibility.Collapsed;
                     lsvReparacions.ItemsSource = reparacions.Where(r => r.Estat == EstatReparacio.OBERTA).OrderBy(r => r.Data);
                     break;
@@ -63,6 +64,7 @@ namespace Vista
                     break;
             }
 
+            btnAfegir.Visibility = usuari.Tipus == TipusUsuari.RECEPCIO ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void updateList()
@@ -116,7 +118,7 @@ namespace Vista
             Reparacio reparacio = (Reparacio)lsvReparacions.SelectedItem;
             if (reparacio == null)
                 return;
-            ReparacioWindow reparacioWindow = new ReparacioWindow(reparacio, cp);
+            ReparacioWindow reparacioWindow = new ReparacioWindow(reparacio, usuari, false, cp);
             reparacioWindow.Owner = this;
             reparacioWindow.ShowDialog();
             lsvReparacions.UnselectAll();
@@ -124,7 +126,7 @@ namespace Vista
 
         private void btnAfegir_Click(object sender, RoutedEventArgs e)
         {
-            SeleccioClientWindow crearReparacioWindow = new SeleccioClientWindow(cp);
+            SeleccioClientWindow crearReparacioWindow = new SeleccioClientWindow(usuari, cp);
             crearReparacioWindow.Owner = this;
             crearReparacioWindow.ShowDialog();
         }

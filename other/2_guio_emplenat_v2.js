@@ -12,13 +12,13 @@ db.usuaris.insertMany([
     tipus: "admin",
   },
   {
-    login: "user1",
-    password: "user1",
+    login: "mecanic",
+    password: "123",
     tipus: "mecanic",
   },
   {
-    login: "user2",
-    password: "user2",
+    login: "recepcio",
+    password: "123",
     tipus: "recepcio",
   },
 ]);

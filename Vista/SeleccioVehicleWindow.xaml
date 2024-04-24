@@ -5,8 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Vista"
         mc:Ignorable="d"
+        Loaded="Window_Loaded"
+        Background="#ebf2f2"
         Title="SeleccioVehicleWindow" Height="450" Width="800">
-    <Grid>
-        
+    <Grid Margin="20 10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+
+        <Label Grid.Row="0" Foreground="#3e608c" VerticalAlignment="Center" Content="Selecciona un vehicle" FontWeight="Black" FontSize="23"/>
+
+
+        <StackPanel Margin="0 10" Grid.Row="1" Orientation="Horizontal">
+            <Label Margin="0 0 10 0">Client:</Label>
+            <TextBlock Name="txbClient" Width="400" VerticalAlignment="Center"></TextBlock>
+        </StackPanel>
+
+        <ItemsControl x:Name="lstVehicles" Grid.Row="2" Margin="0 10">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel HorizontalAlignment="Center" Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <local:VehicleUC Width="300" Margin="10" myVehicle="{Binding}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <EventSetter Event="MouseUp" Handler="Item_MouseUp" />
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+        </ItemsControl>
     </Grid>
 </Window>

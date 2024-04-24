@@ -21,6 +21,8 @@ namespace Model
         private DateTime data;
         private int numeroLinies;
         private List<Linia> linies;
+        private int? factura = null;
+        private bool facturaPagada = false;
 
         public Reparacio(string vehicleId, EstatReparacio estat, DateTime data, int numeroLinies)
         {
@@ -55,6 +57,8 @@ namespace Model
         public string Model { get; set; }
         public string DataString { get => data.ToString("dd/MM/yyyy"); }
         public List<Linia> Linies { get => linies; set => linies = value; }
+        public int? Factura { get => factura; set => factura = value; }
+        public bool FacturaPagada { get => facturaPagada; set => facturaPagada = value; }
 
         public override string ToString()
         {

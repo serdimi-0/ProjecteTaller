@@ -22,13 +22,21 @@ namespace Vista
     public partial class ReparacioWindow : Window
     {
         Reparacio reparacio;
+        Usuari usuari;
         GestorBDTaller cp;
+        bool creacio;
 
-        public ReparacioWindow(Reparacio reparacio, GestorBDTaller cp)
+        public ReparacioWindow(Reparacio reparacio, Usuari usuari, bool creacio, GestorBDTaller cp)
         {
             this.reparacio = reparacio;
+            this.creacio = creacio;
+            this.usuari = usuari;
             this.cp = cp;
-            cp.obtenirLinies(reparacio);
+
+            if (!creacio)
+                cp.obtenirLinies(reparacio);
+            else
+                reparacio.Linies = new List<Linia>();
             WindowStartupLocation = WindowStartupLocation.CenterOwner;
             InitializeComponent();
         }
@@ -40,6 +48,35 @@ namespace Vista
             txbMatricula.Text = reparacio.VehicleId;
             txbModel.Text = reparacio.Model;
             lsvLinies.ItemsSource = reparacio.Linies;
+
+            if (usuari.Tipus == TipusUsuari.MECANIC)
+            {
+                btnTancar.Visibility = Visibility.Visible;
+                btnRebutjar.Visibility = Visibility.Visible;
+                btnFacturar.Visibility = Visibility.Collapsed;
+                btnImprimir.Visibility = Visibility.Collapsed;
+                btnPagar.Visibility = Visibility.Collapsed;
+            }
+            else if (usuari.Tipus == TipusUsuari.RECEPCIO)
+            {
+                btnTancar.Visibility = Visibility.Collapsed;
+                btnRebutjar.Visibility = Visibility.Collapsed;
+
+                if (reparacio.Estat == EstatReparacio.OBERTA)
+                {
+                    btnAfegir.Visibility = creacio ? Visibility.Visible : Visibility.Collapsed;
+                    btnFacturar.Visibility = Visibility.Collapsed;
+                    btnImprimir.Visibility = Visibility.Collapsed;
+                    btnPagar.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    btnAfegir.Visibility = reparacio.Factura == null ? Visibility.Visible : Visibility.Collapsed;
+                    btnFacturar.Visibility = reparacio.Factura == null ? Visibility.Visible : Visibility.Collapsed;
+                    btnImprimir.Visibility = reparacio.Factura == null ? Visibility.Collapsed : Visibility.Visible;
+                    btnPagar.Visibility = reparacio.FacturaPagada ? Visibility.Collapsed : Visibility.Visible;
+                }
+            }
         }
     }
 }

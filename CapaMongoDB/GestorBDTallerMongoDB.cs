@@ -85,8 +85,17 @@ namespace CapaMongoDB
                 }
                 DateTime data = reparacioBson["data"].ToUniversalTime();
                 int numeroLinies = reparacioBson["linies"].AsBsonArray.Count;
+                int? factura = null;
+                try
+                {
+                    factura = reparacioBson["factura"].AsInt32;
+                }
+                catch (Exception e)
+                {
+                }
 
                 Reparacio reparacio = new Reparacio(matricula, estat, data, numeroLinies);
+                reparacio.Factura = factura;
                 reparacio.Id = id;
                 reparacionsList.Add(reparacio);
             }
@@ -187,6 +196,28 @@ namespace CapaMongoDB
                 clientsList.Add(new Client(id, dni, nom, cognoms, telefon, adreça));
             }
             return clientsList;
+        }
+
+        public Client obtenirVehicles(Client client)
+        {
+            var clients = db.GetCollection<BsonDocument>("clients");
+
+            var clientBson = clients.Find(new BsonDocument("_id", ObjectId.Parse(client.Id))).FirstOrDefault();
+            if (clientBson == null)
+                throw new GestorBDTallerException();
+
+            var vehiclesBson = clientBson["vehicles"].AsBsonArray;
+            List<Vehicle> vehicles = new List<Vehicle>();
+            foreach (var vehicleBson in vehiclesBson)
+            {
+                string matricula = vehicleBson["matricula"].AsString;
+                string model = vehicleBson["model"].AsString;
+                int km = vehicleBson["km"].AsInt32;
+                vehicles.Add(new Vehicle(matricula, model, km));
+            }
+            client.Vehicles = vehicles;
+
+            return client;
         }
 
         private void comprovaConnexió()

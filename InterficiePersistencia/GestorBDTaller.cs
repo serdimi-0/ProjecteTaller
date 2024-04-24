@@ -20,6 +20,8 @@ namespace InterficiePersistencia
 
         List<Client> obtenirClients();
 
+        Client obtenirVehicles(Client client);
+
         /// <summary>
         /// Tanca la capa de persistència
         /// </summary>

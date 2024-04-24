@@ -216,13 +216,11 @@ db.reparacions.insertMany([
     vehicle_id: "1234ABC",
     linies: [
       {
-        numero: "1",
         descripció: "Canvi d'oli i filtre",
         tipus: "feina",
         quantitat: 1,
       },
       {
-        numero: "2",
         descripció: "Filtre de l'aire",
         tipus: "peça",
         codi_fabricant: "FA123",
@@ -230,7 +228,6 @@ db.reparacions.insertMany([
         quantitat: 2,
       },
       {
-        numero: "3",
         descripció: "Revisió de frens",
         tipus: "feina",
         quantitat: 2,
@@ -243,7 +240,6 @@ db.reparacions.insertMany([
     vehicle_id: "5678DEF",
     linies: [
       {
-        numero: "1",
         descripció: "Canvi de rodes",
         tipus: "peça",
         codi_fabricant: "NE456",
@@ -252,7 +248,6 @@ db.reparacions.insertMany([
         preu: 400,
       },
       {
-        numero: "2",
         descripció: "Alineat de direcció",
         tipus: "feina",
         descompte: 20,
@@ -268,13 +263,11 @@ db.reparacions.insertMany([
     vehicle_id: "121314JKL",
     linies: [
       {
-        numero: "1",
         descripció: "Revisió general",
         tipus: "pack",
         preu: 200,
       },
       {
-        numero: "2",
         descripció: "Canvi de bateria",
         tipus: "peça",
         codi_fabricant: "BA789",
@@ -282,7 +275,6 @@ db.reparacions.insertMany([
         quantitat: 1,
       },
       {
-        numero: "3",
         descripció: "Diagnòstic electrònic",
         tipus: "feina",
         quantitat: 1,
@@ -295,14 +287,12 @@ db.reparacions.insertMany([
     vehicle_id: "394041KLM",
     linies: [
       {
-        numero: "1",
         descripció: "Canvi de corretja de distribució",
         tipus: "feina",
         quantitat: 4,
         preu: 240,
       },
       {
-        numero: "2",
         descripció: "Kit d'embragatge",
         tipus: "peça",
         codi_fabricant: "EM012",

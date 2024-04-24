@@ -43,7 +43,7 @@ namespace Vista
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            txbEstat.Text = reparacio.EstatString;
+            txbEstat.Text = creacio ? "Creació" : reparacio.EstatString;
             txbData.Text = reparacio.DataString;
             txbMatricula.Text = reparacio.VehicleId;
             txbModel.Text = reparacio.Model;
@@ -77,6 +77,14 @@ namespace Vista
                     btnPagar.Visibility = reparacio.FacturaPagada ? Visibility.Collapsed : Visibility.Visible;
                 }
             }
+        }
+
+        private void btnAfegir_Click(object sender, RoutedEventArgs e)
+        {
+            LiniaWindow lw = new LiniaWindow(usuari, true, cp);
+            lw.Owner = this;
+            lw.ShowDialog();
+
         }
     }
 }

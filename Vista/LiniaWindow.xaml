@@ -1,0 +1,93 @@
+﻿<Window x:Class="Vista.LiniaWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Vista"
+        mc:Ignorable="d"
+        Loaded="Window_Loaded"
+        Title="LiniaWindow" Height="400" Width="700">
+    <Grid Margin="40 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Margin="10 5" Grid.Row="1" Orientation="Horizontal">
+            <Label Content="Tipus" Width="120"/>
+            <ComboBox x:Name="cbTipus" SelectionChanged="cbTipus_SelectionChanged" VerticalContentAlignment="Center" Width="200">
+                <ComboBoxItem Content="Feina" IsSelected="True"/>
+                <ComboBoxItem Content="Peça"/>
+                <ComboBoxItem Content="Pack"/>
+                <ComboBoxItem Content="Altres"/>
+            </ComboBox>
+        </StackPanel>
+
+        <Label x:Name="lblTitle" Grid.Row="0" Margin="10 5" Foreground="#3e608c" VerticalAlignment="Center" Content="Creació de línia" FontWeight="Black" FontSize="23"/>
+
+
+        <Grid Margin="10 5" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Descripció" Width="120"/>
+            <TextBox x:Name="txbDescripcio" Grid.Column="1" VerticalContentAlignment="Center"/>
+            <ComboBox x:Name="cbDescripcio" Grid.Column="1" VerticalContentAlignment="Center"/>
+        </Grid>
+
+        <Grid Margin="10 5" Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid x:Name="gridPreu" Margin="0 5" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Preu" Width="120"/>
+                <TextBox x:Name="txbPreu" Grid.Column="1" VerticalContentAlignment="Center"/>
+            </Grid>
+
+            <Grid x:Name="gridQuantitat" Margin="0 5" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label x:Name="lblQuantitat" Content="Quantitat" Width="120"/>
+                <TextBox x:Name="txbQuantitat" Grid.Column="1" VerticalContentAlignment="Center"/>
+            </Grid>
+
+            <Grid x:Name="gridCodi" Margin="0 5" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Codi fabricant" Width="120"/>
+                <TextBox x:Name="txbCodi" Grid.Column="1" VerticalContentAlignment="Center"/>
+            </Grid>
+
+            <Grid x:Name="gridPreuUnitat" Margin="10 5" Grid.Row="0" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Preu unitat" Width="120"/>
+                <TextBox x:Name="txbPreuUnitat" Grid.Column="1" VerticalContentAlignment="Center"/>
+            </Grid>
+
+
+        </Grid>
+
+        <Button x:Name="btnDesar" Click="btnDesar_Click" Content="Desar" Grid.Row="4" Width="120" HorizontalAlignment="Center" Margin="0 10"/>
+    </Grid>
+</Window>

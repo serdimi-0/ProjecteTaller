@@ -22,6 +22,8 @@ namespace InterficiePersistencia
 
         Client obtenirVehicles(Client client);
 
+        bool insertarReparacio(Reparacio reparacio);
+
         /// <summary>
         /// Tanca la capa de persistència
         /// </summary>

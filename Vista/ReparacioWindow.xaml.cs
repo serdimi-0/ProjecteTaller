@@ -48,6 +48,7 @@ namespace Vista
             txbMatricula.Text = reparacio.VehicleId;
             txbModel.Text = reparacio.Model;
             lsvLinies.ItemsSource = reparacio.Linies;
+            btnDesar.Visibility = creacio ? Visibility.Visible : Visibility.Collapsed;
 
             if (usuari.Tipus == TipusUsuari.MECANIC)
             {
@@ -81,10 +82,38 @@ namespace Vista
 
         private void btnAfegir_Click(object sender, RoutedEventArgs e)
         {
-            LiniaWindow lw = new LiniaWindow(usuari, true, cp);
+            Linia linia = new Linia();
+            linia.Numero = reparacio.Linies.Count + 1;
+
+            LiniaWindow lw = new LiniaWindow(usuari, linia, true, cp);
             lw.Owner = this;
             lw.ShowDialog();
+            // get linia from LiniaWindow
+            if (lw.DialogResult == true)
+            {
+                reparacio.Linies.Add(linia);
+                lsvLinies.Items.Refresh();
+            }
 
+        }
+
+        private void btnDesar_Click(object sender, RoutedEventArgs e)
+        {
+            if(creacio)
+            {
+                MessageBoxResult result = MessageBox.Show("Estàs segur que vols crear la reparació?", "Creació de reparació", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.No)
+                    return;
+
+                cp.insertarReparacio(reparacio);
+
+            }
+            /*else
+            {
+                cp.actualitzarReparacio(reparacio);
+            }*/
+            /*DialogResult = true;*/
+            Close();
         }
     }
 }

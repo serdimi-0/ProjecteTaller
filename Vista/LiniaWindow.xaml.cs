@@ -23,12 +23,14 @@ namespace Vista
     {
         GestorBDTaller cp;
         Usuari usuari;
+        Linia linia;
         bool creacio;
 
-        public LiniaWindow(Usuari usuari, bool creacio, GestorBDTaller cp)
+        public LiniaWindow(Usuari usuari, Linia linia, bool creacio, GestorBDTaller cp)
         {
             WindowStartupLocation = WindowStartupLocation.CenterOwner;
             this.usuari = usuari;
+            this.linia = linia;
             this.creacio = creacio;
             this.cp = cp;
             InitializeComponent();
@@ -42,11 +44,14 @@ namespace Vista
             gridQuantitat.Visibility = Visibility.Visible;
             lblQuantitat.Content = "Quantitat d'hores:";
 
+
             if (usuari.Tipus == TipusUsuari.RECEPCIO)
             {
                 cbTipus.IsEnabled = false;
                 gridQuantitat.Visibility = Visibility.Collapsed;
             }
+
+            if (!creacio) cbTipus.IsEnabled = false;
         }
 
         private void cbTipus_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -95,7 +100,9 @@ namespace Vista
 
         private void btnDesar_Click(object sender, RoutedEventArgs e)
         {
-
+            linia.Descripcio = txbDescripcio.Text;
+            DialogResult = true;
+            Close();
         }
 
     }

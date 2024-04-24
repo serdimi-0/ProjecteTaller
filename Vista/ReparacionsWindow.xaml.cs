@@ -128,7 +128,11 @@ namespace Vista
         {
             SeleccioClientWindow crearReparacioWindow = new SeleccioClientWindow(usuari, cp);
             crearReparacioWindow.Owner = this;
-            crearReparacioWindow.ShowDialog();
+            if (crearReparacioWindow.ShowDialog() == true)
+            {
+                reparacions = cp.obtenirReparacions();
+                updateList();
+            }
         }
 
         private void cbMostrar_SelectionChanged(object sender, SelectionChangedEventArgs e)

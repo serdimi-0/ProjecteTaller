@@ -14,7 +14,6 @@ namespace Model
     }
     public class Linia
     {
-        private string numero;
         private string descripcio;
         private decimal? preu;
         private decimal? preuUnitari;
@@ -23,9 +22,12 @@ namespace Model
         private string? codiFabricant;
         private int? facturaId;
 
-        public Linia(string numero, string descripcio, decimal? preu, TipusLinia tipus, int? quantitat, string? codiFabricant, decimal? preuUnitari)
+        public Linia()
         {
-            Numero = numero;
+        }
+
+        public Linia(string descripcio, decimal? preu, TipusLinia tipus, int? quantitat, string? codiFabricant, decimal? preuUnitari)
+        {
             Descripcio = descripcio;
             Preu = preu;
             Tipus = tipus;
@@ -34,7 +36,6 @@ namespace Model
             PreuUnitari = preuUnitari;
         }
 
-        public string Numero { get => numero; set => numero = value; }
         public string Descripcio { get => descripcio; set => descripcio = value; }
         public decimal? Preu { get => preu; set => preu = value; }
         public String PreuString
@@ -66,6 +67,7 @@ namespace Model
         public int? FacturaId { get => facturaId; set => facturaId = value; }
         public string? CodiFabricant { get => codiFabricant; set => codiFabricant = value; }
         public decimal? PreuUnitari { get => preuUnitari; set => preuUnitari = value; }
+        public int Numero { get; set; }
 
     }
 }

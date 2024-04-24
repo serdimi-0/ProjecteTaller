@@ -10,7 +10,8 @@ namespace Model
     {
         FEINA,
         PEÇA,
-        PACK
+        PACK,
+        ALTRES
     }
     public class Linia
     {
@@ -58,6 +59,8 @@ namespace Model
                         return "Peça";
                     case TipusLinia.PACK:
                         return "Pack";
+                    case TipusLinia.ALTRES:
+                        return "Altres";
                     default:
                         return "Desconegut";
                 }

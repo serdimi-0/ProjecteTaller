@@ -24,6 +24,7 @@ namespace Vista
         Usuari usuari;
         GestorBDTaller cp;
         List<Client> clients;
+        public Client selectedClient;
 
         public SeleccioClientWindow(Usuari usuari, GestorBDTaller cp)
         {
@@ -49,11 +50,11 @@ namespace Vista
                 MessageBox.Show("Has de seleccionar un client!");
                 return;
             }
+
             Client client = (Client)dtgClients.SelectedItem;
             cp.obtenirVehicles(client);
-            SeleccioVehicleWindow svw = new SeleccioVehicleWindow(client, usuari, cp);
-            svw.Owner = Owner;
-            svw.Show();
+            selectedClient = client;
+            DialogResult = true;
             Close();
 
         }

@@ -10,7 +10,8 @@ namespace Model
     {
         OBERTA,
         TANCADA,
-        FACTURADA
+        FACTURADA,
+        REBUTJADA
     }
 
     public class Reparacio

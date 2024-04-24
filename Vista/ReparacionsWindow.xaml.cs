@@ -122,17 +122,44 @@ namespace Vista
             reparacioWindow.Owner = this;
             reparacioWindow.ShowDialog();
             lsvReparacions.UnselectAll();
+            reparacions = cp.obtenirReparacions();
+            foreach (Reparacio r in reparacions)
+            {
+                r.Model = cp.obtenirVehicle(r.VehicleId).Model;
+            }
+            updateList();
         }
 
         private void btnAfegir_Click(object sender, RoutedEventArgs e)
         {
-            SeleccioClientWindow crearReparacioWindow = new SeleccioClientWindow(usuari, cp);
-            crearReparacioWindow.Owner = this;
-            if (crearReparacioWindow.ShowDialog() == true)
+            SeleccioClientWindow seleccioClientWindow = new SeleccioClientWindow(usuari, cp);
+            seleccioClientWindow.Owner = this;
+            seleccioClientWindow.ShowDialog();
+
+            if(seleccioClientWindow.DialogResult == false)
+                return;
+
+            SeleccioVehicleWindow seleccioVehicleWindow = new SeleccioVehicleWindow(seleccioClientWindow.selectedClient, usuari, cp);
+            seleccioVehicleWindow.Owner = this;
+            seleccioVehicleWindow.ShowDialog();
+
+            if (seleccioVehicleWindow.DialogResult == false)
+                return;
+
+            ReparacioWindow reparacioWindow = new ReparacioWindow(seleccioVehicleWindow.novaReparacio, usuari, true, cp);
+            reparacioWindow.Owner = this;
+            reparacioWindow.ShowDialog();
+
+            if (seleccioVehicleWindow.DialogResult == false)
+                return;
+
+            reparacions = cp.obtenirReparacions();
+            foreach (Reparacio r in reparacions)
             {
-                reparacions = cp.obtenirReparacions();
-                updateList();
+                r.Model = cp.obtenirVehicle(r.VehicleId).Model;
             }
+            lsvReparacions.Items.Refresh();
+            updateList();
         }
 
         private void cbMostrar_SelectionChanged(object sender, SelectionChangedEventArgs e)

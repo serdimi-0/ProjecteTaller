@@ -28,14 +28,20 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <ListView HorizontalContentAlignment="Stretch" Margin="0 0 30 20" x:Name="lsvLinies">
+                <ListView SelectionChanged="lsvLinies_SelectionChanged" HorizontalContentAlignment="Stretch" Margin="0 0 30 20" x:Name="lsvLinies">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <local:LiniaUC myLinia="{Binding}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <Button Click="btnAfegir_Click" x:Name="btnAfegir" Foreground="White" Background="#3e608c" Padding="5" Margin="0 0 30 0" Content="Afegir línia" Grid.Row="1" Width="150"/>
+
+                <StackPanel HorizontalAlignment="Right" Grid.Row="1" Orientation="Horizontal">
+                    <Button Click="btnEliminar_Click" Visibility="Collapsed" x:Name="btnEliminar" Foreground="White" Background="#3e608c" Padding="5" Margin="0 0 20 0" Content="Eliminar línia" Width="150"/>
+                    <Button Click="btnModificar_Click" Visibility="Collapsed" x:Name="btnModificar" Foreground="White" Background="#3e608c" Padding="5" Margin="0 0 20 0" Content="Modificar línia" Width="150"/>
+                    <Button Click="btnAfegir_Click" x:Name="btnAfegir" Foreground="White" Background="#3e608c" Padding="5" Margin="0 0 30 0" Content="Afegir línia" Width="150"/>
+                </StackPanel>
+                
             </Grid>
 
             <Grid Grid.Row="1" Grid.Column="1">
@@ -43,7 +49,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="2*"/>
                 </Grid.RowDefinitions>
 
                 <Grid Margin="10">

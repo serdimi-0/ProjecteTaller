@@ -24,6 +24,8 @@ namespace InterficiePersistencia
 
         bool insertarReparacio(Reparacio reparacio);
 
+        bool modificarReparacio(Reparacio reparacio);
+
         /// <summary>
         /// Tanca la capa de persistència
         /// </summary>

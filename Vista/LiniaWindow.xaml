@@ -26,7 +26,7 @@
             </ComboBox>
         </StackPanel>
 
-        <Label x:Name="lblTitle" Grid.Row="0" Margin="10 5" Foreground="#3e608c" VerticalAlignment="Center" Content="Creació de línia" FontWeight="Black" FontSize="23"/>
+        <Label x:Name="lblTitle" Grid.Row="0" Margin="10 5" Foreground="#3e608c" VerticalAlignment="Center" Content="Gestió de línia" FontWeight="Black" FontSize="23"/>
 
 
         <Grid Margin="10 5" Grid.Row="2">
@@ -35,8 +35,8 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="Descripció" Width="120"/>
-            <TextBox x:Name="txbDescripcio" Grid.Column="1" VerticalContentAlignment="Center"/>
-            <ComboBox x:Name="cbDescripcio" Grid.Column="1" VerticalContentAlignment="Center"/>
+            <TextBox x:Name="txbDescripcio" TextChanged="txbDescripcio_TextChanged" Grid.Column="1" VerticalContentAlignment="Center"/>
+            <ComboBox x:Name="cbDescripcio" SelectionChanged="cbDescripcio_SelectionChanged" Grid.Column="1" VerticalContentAlignment="Center"/>
         </Grid>
 
         <Grid Margin="10 5" Grid.Row="3">
@@ -47,6 +47,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Grid x:Name="gridPreu" Margin="0 5" Grid.Row="0">
@@ -55,7 +56,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Label Content="Preu" Width="120"/>
-                <TextBox x:Name="txbPreu" Grid.Column="1" VerticalContentAlignment="Center"/>
+                <TextBox TextChanged="txbPreu_TextChanged" x:Name="txbPreu" Grid.Column="1" VerticalContentAlignment="Center"/>
             </Grid>
 
             <Grid x:Name="gridQuantitat" Margin="0 5" Grid.Row="0">
@@ -64,7 +65,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Label x:Name="lblQuantitat" Content="Quantitat" Width="120"/>
-                <TextBox x:Name="txbQuantitat" Grid.Column="1" VerticalContentAlignment="Center"/>
+                <TextBox TextChanged="txbQuantitat_TextChanged" x:Name="txbQuantitat" Grid.Column="1" VerticalContentAlignment="Center"/>
             </Grid>
 
             <Grid x:Name="gridCodi" Margin="0 5" Grid.Row="1">
@@ -73,7 +74,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Label Content="Codi fabricant" Width="120"/>
-                <TextBox x:Name="txbCodi" Grid.Column="1" VerticalContentAlignment="Center"/>
+                <TextBox TextChanged="txbCodi_TextChanged" x:Name="txbCodi" Grid.Column="1" VerticalContentAlignment="Center"/>
             </Grid>
 
             <Grid x:Name="gridPreuUnitat" Margin="10 5" Grid.Row="0" Grid.Column="1">
@@ -82,12 +83,27 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Label Content="Preu unitat" Width="120"/>
-                <TextBox x:Name="txbPreuUnitat" Grid.Column="1" VerticalContentAlignment="Center"/>
+                <TextBox TextChanged="txbPreuUnitat_TextChanged" x:Name="txbPreuUnitat" Grid.Column="1" VerticalContentAlignment="Center"/>
+            </Grid>
+
+            <Grid x:Name="gridDescompte" Margin="0 40" Grid.Row="2" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Descompte:" FontWeight="Black" Width="120"/>
+                <TextBox x:Name="txbDescompte" Grid.Column="1" VerticalContentAlignment="Center"/>
             </Grid>
 
 
         </Grid>
 
-        <Button x:Name="btnDesar" Click="btnDesar_Click" Content="Desar" Grid.Row="4" Width="120" HorizontalAlignment="Center" Margin="0 10"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="4">
+            <Button Visibility="Collapsed" x:Name="btnDesar" Click="btnDesar_Click" Content="Desar" Width="120" HorizontalAlignment="Center" Margin="10 10"/>
+            <Button x:Name="btnCancelar" Click="btnCancelar_Click" Content="Cancelar" Width="120" HorizontalAlignment="Center" Margin="10 10"/>
+
+        </StackPanel>
+
     </Grid>
 </Window>

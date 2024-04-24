@@ -24,6 +24,7 @@ namespace Vista
         Client client;
         Usuari usuari;
         GestorBDTaller cp;
+        public Reparacio novaReparacio;
 
         public SeleccioVehicleWindow(Client client, Usuari usuari, GestorBDTaller cp)
         {
@@ -46,9 +47,8 @@ namespace Vista
             // Creem una nova reparació amb data d'avui i el vehicle seleccionat
             Reparacio reparacio = new Reparacio(selectedVehicle.Matricula, EstatReparacio.OBERTA, DateTime.Now, 0);
             reparacio.Model = selectedVehicle.Model;
-            ReparacioWindow rw = new ReparacioWindow(reparacio, usuari, true, cp);
-            rw.Owner = Owner;
-            rw.Show();
+            novaReparacio = reparacio;
+            DialogResult = true;
             Close();
         }
 

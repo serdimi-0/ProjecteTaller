@@ -46,9 +46,6 @@ namespace CapaMongoDB
             string tipus = usuariBson["tipus"].AsString;
             switch (tipus)
             {
-                case "admin":
-                    usuari.Tipus = TipusUsuari.ADMIN;
-                    break;
                 case "mecanic":
                     usuari.Tipus = TipusUsuari.MECANIC;
                     break;
@@ -80,6 +77,9 @@ namespace CapaMongoDB
                     case "facturada":
                         estat = EstatReparacio.FACTURADA;
                         break;
+                    case "rebutjada":
+                        estat = EstatReparacio.REBUTJADA;
+                        break;
                     default:
                         throw new GestorBDTallerException();
                 }
@@ -97,7 +97,8 @@ namespace CapaMongoDB
                 Reparacio reparacio = new Reparacio(matricula, estat, data, numeroLinies);
                 reparacio.Factura = factura;
                 reparacio.Id = id;
-                reparacionsList.Add(reparacio);
+                if (reparacio.Estat != EstatReparacio.REBUTJADA)
+                    reparacionsList.Add(reparacio);
             }
             return reparacionsList;
         }
@@ -134,13 +135,20 @@ namespace CapaMongoDB
                 {
                     case "feina":
                         tipus = TipusLinia.FEINA;
-                        quantitat = liniaBson["quantitat"].AsInt32;
+                        try
+                        {
+                            quantitat = liniaBson["quantitat"].IsBsonNull ? null : liniaBson["quantitat"].AsInt32;
+                        }
+                        catch (KeyNotFoundException e)
+                        {
+                            quantitat = null;
+                        }
                         codiFabricant = null;
                         preuUnitari = null;
                         break;
                     case "peça":
                         tipus = TipusLinia.PEÇA;
-                        quantitat = liniaBson["quantitat"].AsInt32;
+                        quantitat = liniaBson["quantitat"].IsBsonNull ? null : liniaBson["quantitat"].AsInt32;
                         codiFabricant = liniaBson["codi_fabricant"].AsString;
                         preuUnitari = liniaBson["preu_unitat"].ToDecimal();
                         break;
@@ -238,28 +246,60 @@ namespace CapaMongoDB
             };
 
 
-            /*var liniesBson = reparacioBson["linies"].AsBsonArray;
+            // En una nova reparació les línies han de ser feines totes
+            var liniesBson = reparacioBson["linies"].AsBsonArray;
             foreach (Linia linia in reparacio.Linies)
             {
                 BsonDocument liniaBson = new BsonDocument
                 {
                     { "descripció", linia.Descripcio },
-                    { "preu", linia.Preu },
+                    { "tipus", "feina" }
+                };
+                liniesBson.Add(liniaBson);
+            }
+
+            reparacions.InsertOne(reparacioBson);
+
+            return true;
+        }
+
+        public bool modificarReparacio(Reparacio reparacio)
+        {
+
+            // replace whole reparacio and linies with new ones
+            var reparacions = db.GetCollection<BsonDocument>("reparacions");
+
+            BsonDocument reparacioBson = new BsonDocument
+            {
+                { "vehicle_id", reparacio.VehicleId },
+                { "estat", reparacio.Estat.ToString().ToLower() },
+                { "data", reparacio.Data },
+                { "linies", new BsonArray() }
+            };
+
+            var liniesBson = reparacioBson["linies"].AsBsonArray;
+            foreach (Linia linia in reparacio.Linies)
+            {
+                BsonDocument liniaBson = new BsonDocument
+                {
+                    { "descripció", linia.Descripcio },
                     { "tipus", linia.Tipus.ToString().ToLower() }
                 };
-                if (linia.Tipus == TipusLinia.FEINA || linia.Tipus == TipusLinia.PEÇA)
+                if (linia.Tipus == TipusLinia.FEINA)
                 {
                     liniaBson.Add("quantitat", linia.Quantitat);
                 }
-                if (linia.Tipus == TipusLinia.PEÇA)
+                else if (linia.Tipus == TipusLinia.PEÇA)
                 {
+                    liniaBson.Add("quantitat", linia.Quantitat);
                     liniaBson.Add("codi_fabricant", linia.CodiFabricant);
                     liniaBson.Add("preu_unitat", linia.PreuUnitari);
                 }
                 liniesBson.Add(liniaBson);
-            }*/
+            }
 
-            reparacions.InsertOne(reparacioBson);
+            reparacions.ReplaceOne(new BsonDocument("_id", ObjectId.Parse(reparacio.Id)), reparacioBson);
+
 
             return true;
         }

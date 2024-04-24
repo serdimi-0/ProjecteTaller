@@ -48,7 +48,6 @@ namespace Vista
             txbMatricula.Text = reparacio.VehicleId;
             txbModel.Text = reparacio.Model;
             lsvLinies.ItemsSource = reparacio.Linies;
-            btnDesar.Visibility = creacio ? Visibility.Visible : Visibility.Collapsed;
 
             if (usuari.Tipus == TipusUsuari.MECANIC)
             {
@@ -78,6 +77,8 @@ namespace Vista
                     btnPagar.Visibility = reparacio.FacturaPagada ? Visibility.Collapsed : Visibility.Visible;
                 }
             }
+
+            btnDesar.Visibility = creacio ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void btnAfegir_Click(object sender, RoutedEventArgs e)
@@ -88,32 +89,70 @@ namespace Vista
             LiniaWindow lw = new LiniaWindow(usuari, linia, true, cp);
             lw.Owner = this;
             lw.ShowDialog();
-            // get linia from LiniaWindow
             if (lw.DialogResult == true)
             {
                 reparacio.Linies.Add(linia);
                 lsvLinies.Items.Refresh();
+                btnDesar.Visibility = Visibility.Visible;
+                btnTancar.Visibility = Visibility.Collapsed;
             }
 
         }
 
         private void btnDesar_Click(object sender, RoutedEventArgs e)
         {
-            if(creacio)
+            if (creacio)
             {
-                MessageBoxResult result = MessageBox.Show("Estàs segur que vols crear la reparació?", "Creació de reparació", MessageBoxButton.YesNo);
-                if (result == MessageBoxResult.No)
-                    return;
+                MessageBoxResult result = MessageBox.Show("Estàs segur que vols crear aquesta reparació? No podràs modificar-la més endevant.", "Creació de reparació", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.No) return;
 
                 cp.insertarReparacio(reparacio);
 
             }
-            /*else
+            else
             {
-                cp.actualitzarReparacio(reparacio);
-            }*/
-            /*DialogResult = true;*/
-            Close();
+                MessageBoxResult result = MessageBox.Show("Estàs segur que vols modificar aquesta reparació?", "Modificació de reparació", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.No) return;
+
+                cp.modificarReparacio(reparacio);
+            }
+            btnDesar.Visibility = Visibility.Collapsed;
+            btnTancar.Visibility = Visibility.Visible;
+        }
+
+        private void btnEliminar_Click(object sender, RoutedEventArgs e)
+        {
+            reparacio.Linies.Remove((Linia)lsvLinies.SelectedItem);
+            lsvLinies.Items.Refresh();
+            btnDesar.Visibility = Visibility.Visible;
+            btnTancar.Visibility = Visibility.Collapsed;
+        }
+
+        private void btnModificar_Click(object sender, RoutedEventArgs e)
+        {
+            Linia linia = (Linia)lsvLinies.SelectedItem;
+            LiniaWindow lw = new LiniaWindow(usuari, linia, false, cp);
+            lw.Owner = this;
+            lw.ShowDialog();
+            if (lw.DialogResult == true)
+            {
+                lsvLinies.Items.Refresh();
+                btnDesar.Visibility = Visibility.Visible;
+                btnTancar.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void lsvLinies_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lsvLinies.SelectedItem == null)
+            {
+                btnEliminar.Visibility = Visibility.Collapsed;
+                btnModificar.Visibility = Visibility.Collapsed;
+                return;
+            }
+            btnEliminar.Visibility = usuari.Tipus == TipusUsuari.MECANIC ? Visibility.Visible : Visibility.Collapsed;
+            btnModificar.Visibility = usuari.Tipus == TipusUsuari.RECEPCIO && reparacio.Estat == EstatReparacio.TANCADA ||
+                                      usuari.Tipus == TipusUsuari.MECANIC ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 }

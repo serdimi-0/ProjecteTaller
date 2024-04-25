@@ -52,7 +52,7 @@ namespace Vista
                 cbTipus.IsEnabled = false;
                 gridQuantitat.Visibility = Visibility.Collapsed;
             }
-            else if (usuari.Tipus == TipusUsuari.MECANIC)
+            else
             {
                 // La resta de casos tenen una visibilitat especificada per una funció
                 establirVisibilitatCamps(linia.Tipus);
@@ -64,6 +64,21 @@ namespace Vista
                     txbPreu.Text = linia.Preu.ToString();
                     txbPreuUnitat.Text = linia.PreuUnitari.ToString();
                     txbCodi.Text = linia.CodiFabricant;
+                }
+
+                // si es un recepcionista, no pot modificar cap dels camps
+                if (usuari.Tipus == TipusUsuari.RECEPCIO)
+                {
+                    txbDescripcio.IsEnabled = false;
+                    txbQuantitat.IsEnabled = false;
+                    txbPreu.IsEnabled = false;
+                    txbPreuUnitat.IsEnabled = false;
+                    txbCodi.IsEnabled = false;
+                    cbTipus.IsEnabled = false;
+                    gridDescompte.Visibility = Visibility.Visible;
+                    if (linia.Descompte != null)
+                        txbDescompte.Text = linia.Descompte.ToString();
+                    btnDesar.Visibility = Visibility.Collapsed;
                 }
             }
 
@@ -86,6 +101,15 @@ namespace Vista
 
         private void btnDesar_Click(object sender, RoutedEventArgs e)
         {
+
+            if (usuari.Tipus == TipusUsuari.RECEPCIO)
+            {
+                linia.Descompte = int.Parse(txbDescompte.Text);
+                DialogResult = true;
+                Close();
+                return;
+            }
+
             linia.Descripcio = txbDescripcio.Text;
             try
             {
@@ -293,7 +317,7 @@ namespace Vista
                 return;
             }
 
-            if(txbPreu.Text.ToCharArray().Count(c => c == ',' || c == '.') > 1)
+            if (txbPreu.Text.ToCharArray().Count(c => c == ',' || c == '.') > 1)
             {
                 preuOk = false;
                 txbPreu.Background = Brushes.Red;
@@ -350,6 +374,27 @@ namespace Vista
             }
             calcularVisibilityDesar();
         }
+        private void txbDescompte_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                int descompte = int.Parse(txbDescompte.Text);
+
+                if(descompte >= 100 || descompte <= 0)
+                {
+                    throw new Exception();
+                }
+
+                txbDescompte.Background = Brushes.White;
+                btnDesar.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+                txbDescompte.Background = Brushes.Red;
+                btnDesar.Visibility = Visibility.Collapsed;
+                return;
+            }
+        }
 
         void calcularVisibilityDesar()
         {
@@ -363,7 +408,12 @@ namespace Vista
                 {
                     case TipusLinia.FEINA:
                         if (txbDescripcio.Text != linia.Descripcio || int.Parse(txbQuantitat.Text) != linia.Quantitat)
-                            esPotGuardar = descripcioOk && quantitatOk;
+                        {
+                            if (usuari.Tipus == TipusUsuari.RECEPCIO)
+                                esPotGuardar = descripcioOk;
+                            else
+                                esPotGuardar = descripcioOk && quantitatOk;
+                        }
                         else
                             esPotGuardar = false;
                         break;

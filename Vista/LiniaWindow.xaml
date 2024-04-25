@@ -92,7 +92,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Label Content="Descompte:" FontWeight="Black" Width="120"/>
-                <TextBox x:Name="txbDescompte" Grid.Column="1" VerticalContentAlignment="Center"/>
+                <TextBox TextChanged="txbDescompte_TextChanged" x:Name="txbDescompte" Grid.Column="1" VerticalContentAlignment="Center"/>
             </Grid>
 
 

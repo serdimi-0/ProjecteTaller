@@ -158,11 +158,26 @@ namespace CapaMongoDB
                         codiFabricant = null;
                         preuUnitari = null;
                         break;
+                    case "altres":
+                        tipus = TipusLinia.ALTRES;
+                        quantitat = null;
+                        codiFabricant = null;
+                        preuUnitari = null;
+                        break;
                     default:
                         throw new GestorBDTallerException();
                 }
                 Linia l = new Linia(descripcio, preu, tipus, quantitat, codiFabricant, preuUnitari);
                 l.Numero = i;
+
+                try
+                {
+                    l.Descompte = liniaBson["descompte"].AsInt32;
+                }
+                catch (Exception e)
+                {
+                }
+
 
                 linies.Add(l);
                 i++;
@@ -295,10 +310,34 @@ namespace CapaMongoDB
                     liniaBson.Add("codi_fabricant", linia.CodiFabricant);
                     liniaBson.Add("preu_unitat", linia.PreuUnitari);
                 }
+
+                if (linia.Preu != null)
+                    liniaBson.Add("preu", linia.Preu);
+
+                if (linia.Descompte != null && linia.Descompte != 0)
+                    liniaBson.Add("descompte", linia.Descompte);
+
                 liniesBson.Add(liniaBson);
             }
 
             reparacions.ReplaceOne(new BsonDocument("_id", ObjectId.Parse(reparacio.Id)), reparacioBson);
+
+
+            return true;
+        }
+
+        public bool canviarEstatReparacio(Reparacio reparacio, EstatReparacio estat)
+        {
+            var reparacions = db.GetCollection<BsonDocument>("reparacions");
+
+            // Get the current document
+            var reparacioBson = reparacions.Find(new BsonDocument("_id", ObjectId.Parse(reparacio.Id))).FirstOrDefault();
+            if (reparacioBson == null)
+                return false;
+
+            // Update the document
+            var update = Builders<BsonDocument>.Update.Set("estat", estat.ToString().ToLower());
+            reparacions.UpdateOne(new BsonDocument("_id", ObjectId.Parse(reparacio.Id)), update);
 
 
             return true;

@@ -94,9 +94,9 @@ namespace Vista
             }
 
             if (ordreFiltre.Contains("asc"))
-                reparacionsFiltrades = reparacionsFiltrades.OrderByDescending(r => r.Data);
-            else
                 reparacionsFiltrades = reparacionsFiltrades.OrderBy(r => r.Data);
+            else
+                reparacionsFiltrades = reparacionsFiltrades.OrderByDescending(r => r.Data);
 
             lsvReparacions.ItemsSource = reparacionsFiltrades;
         }

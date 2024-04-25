@@ -22,6 +22,7 @@ namespace Model
         private int? quantitat;
         private string? codiFabricant;
         private int? facturaId;
+        private int? descompte;
 
         public Linia()
         {
@@ -71,6 +72,7 @@ namespace Model
         public string? CodiFabricant { get => codiFabricant; set => codiFabricant = value; }
         public decimal? PreuUnitari { get => preuUnitari; set => preuUnitari = value; }
         public int Numero { get; set; }
+        public int? Descompte { get => descompte; set => descompte = value; }
 
     }
 }

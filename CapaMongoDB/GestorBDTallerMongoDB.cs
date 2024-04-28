@@ -12,13 +12,27 @@ namespace CapaMongoDB
     {
         MongoClient con;
         IMongoDatabase db;
+        public bool connectat = false;
 
         public GestorBDTallerMongoDB(NameValueCollection properties)
         {
 
             con = new MongoClient($"mongodb://{properties["ip"]}:{properties["port"]}/");
-            comprovaConnexió();
-            db = con.GetDatabase("taller");
+            try
+            {
+                comprovaConnexió();
+                db = con.GetDatabase("taller");
+                connectat = true;
+            }
+            catch (GestorBDTallerException e)
+            {
+                connectat = false;
+            }
+        }
+
+        public bool connexioEstablerta()
+        {
+            return connectat;
         }
 
         public void confirmarCanvis()
@@ -341,6 +355,22 @@ namespace CapaMongoDB
 
 
             return true;
+        }
+
+        public List<Pack> obtenirPacks()
+        {
+            List<Pack> list = new List<Pack>();
+            var packs = db.GetCollection<BsonDocument>("packs");
+
+            var packsBson = packs.Find(new BsonDocument()).ToList();
+            foreach (var packBson in packsBson)
+            {
+                string nom = packBson["descripcio"].AsString;
+                decimal preu = packBson["preu"].ToDecimal();
+                list.Add(new Pack(nom, preu));
+            }
+
+            return list;
         }
 
         private void comprovaConnexió()

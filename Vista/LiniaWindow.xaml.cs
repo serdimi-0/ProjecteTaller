@@ -46,7 +46,7 @@ namespace Vista
                 gridCodi.Visibility = Visibility.Collapsed;
                 gridPreu.Visibility = Visibility.Collapsed;
                 gridPreuUnitat.Visibility = Visibility.Collapsed;
-                cbDescripcio.Visibility = Visibility.Collapsed;
+                cbPacks.Visibility = Visibility.Collapsed;
                 gridDescompte.Visibility = !creacio ? Visibility.Visible : Visibility.Collapsed;
                 lblQuantitat.Content = "Quantitat d'hores:";
                 cbTipus.IsEnabled = false;
@@ -54,6 +54,16 @@ namespace Vista
             }
             else
             {
+
+                List<Pack> packs = cp.obtenirPacks();
+                foreach (Pack pack in packs)
+                {
+                    ComboBoxItem item = new ComboBoxItem();
+                    item.Content = pack.Nom;
+                    item.Tag = pack.Preu;
+                    cbPacks.Items.Add(item);
+                }
+
                 // La resta de casos tenen una visibilitat especificada per una funció
                 establirVisibilitatCamps(linia.Tipus);
                 gridDescompte.Visibility = Visibility.Collapsed;
@@ -88,7 +98,7 @@ namespace Vista
         private void cbTipus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            if (gridCodi == null || gridPreu == null || gridPreuUnitat == null || cbDescripcio == null || gridQuantitat == null || lblQuantitat == null)
+            if (gridCodi == null || gridPreu == null || gridPreuUnitat == null || cbPacks == null || gridQuantitat == null || lblQuantitat == null)
             {
                 return;
             }
@@ -102,15 +112,20 @@ namespace Vista
         private void btnDesar_Click(object sender, RoutedEventArgs e)
         {
 
-            if (usuari.Tipus == TipusUsuari.RECEPCIO)
+            if (usuari.Tipus == TipusUsuari.RECEPCIO && !creacio)
             {
                 linia.Descompte = int.Parse(txbDescompte.Text);
                 DialogResult = true;
                 Close();
                 return;
             }
+            linia.Tipus = tipusFromString(((ComboBoxItem)cbTipus.SelectedValue).Content.ToString());
 
-            linia.Descripcio = txbDescripcio.Text;
+            if (linia.Tipus == TipusLinia.PACK)
+                linia.Descripcio = (((ComboBoxItem)cbPacks.SelectedValue).Content.ToString());
+            else
+                linia.Descripcio = txbDescripcio.Text;
+
             try
             {
                 linia.Quantitat = txbQuantitat.Text == "" ? null : int.Parse(txbQuantitat.Text);
@@ -123,7 +138,6 @@ namespace Vista
                 return;
             }
             linia.CodiFabricant = txbCodi.Text;
-            linia.Tipus = tipusFromString(((ComboBoxItem)cbTipus.SelectedValue).Content.ToString());
             DialogResult = true;
             Close();
         }
@@ -137,7 +151,7 @@ namespace Vista
                     gridCodi.Visibility = Visibility.Collapsed;
                     gridPreu.Visibility = Visibility.Collapsed;
                     gridPreuUnitat.Visibility = Visibility.Collapsed;
-                    cbDescripcio.Visibility = Visibility.Collapsed;
+                    cbPacks.Visibility = Visibility.Collapsed;
                     gridQuantitat.Visibility = Visibility.Visible;
                     lblQuantitat.Content = "Quantitat d'hores:";
                     break;
@@ -146,7 +160,7 @@ namespace Vista
                     gridCodi.Visibility = Visibility.Visible;
                     gridPreu.Visibility = Visibility.Collapsed;
                     gridPreuUnitat.Visibility = Visibility.Visible;
-                    cbDescripcio.Visibility = Visibility.Collapsed;
+                    cbPacks.Visibility = Visibility.Collapsed;
                     gridQuantitat.Visibility = Visibility.Visible;
                     lblQuantitat.Content = "Quantitat";
                     break;
@@ -155,15 +169,19 @@ namespace Vista
                     gridCodi.Visibility = Visibility.Collapsed;
                     gridPreu.Visibility = Visibility.Collapsed;
                     gridPreuUnitat.Visibility = Visibility.Collapsed;
-                    cbDescripcio.Visibility = Visibility.Visible;
                     gridQuantitat.Visibility = Visibility.Collapsed;
+                    if (usuari.Tipus == TipusUsuari.MECANIC)
+                        cbPacks.Visibility = Visibility.Visible;
+                    else
+                        cbPacks.Visibility = Visibility.Collapsed;
                     break;
                 case TipusLinia.ALTRES:
                     cbTipus.SelectedIndex = 3;
                     gridCodi.Visibility = Visibility.Collapsed;
                     gridPreu.Visibility = Visibility.Visible;
+                    txbPreu.IsEnabled = true;
                     gridPreuUnitat.Visibility = Visibility.Collapsed;
-                    cbDescripcio.Visibility = Visibility.Collapsed;
+                    cbPacks.Visibility = Visibility.Collapsed;
                     gridQuantitat.Visibility = Visibility.Collapsed;
                     break;
             }
@@ -207,8 +225,28 @@ namespace Vista
             calcularVisibilityDesar();
         }
 
-        private void cbDescripcio_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void cbPacks_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (cbPacks.SelectedIndex == -1)
+            {
+                return;
+            }
+
+            try
+            {
+                string descripcio = cbPacks.Text;
+                decimal preu = decimal.Parse(((ComboBoxItem)cbPacks.SelectedItem).Tag.ToString());
+
+                gridPreu.Visibility = Visibility.Visible;
+                txbDescripcio.Text = descripcio;
+                txbPreu.Text = preu.ToString();
+                txbPreu.IsEnabled = false;
+                btnDesar.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
 
         }
 
@@ -380,7 +418,7 @@ namespace Vista
             {
                 int descompte = int.Parse(txbDescompte.Text);
 
-                if(descompte >= 100 || descompte <= 0)
+                if (descompte >= 100 || descompte <= 0)
                 {
                     throw new Exception();
                 }
@@ -425,7 +463,7 @@ namespace Vista
                             esPotGuardar = false;
                         break;
                     case TipusLinia.PACK:
-                        esPotGuardar = descripcioOk;
+                        esPotGuardar = false;
                         break;
                     case TipusLinia.ALTRES:
                         if (txbDescripcio.Text != linia.Descripcio || decimal.Parse(txbPreu.Text) != linia.Preu)

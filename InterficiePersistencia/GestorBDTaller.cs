@@ -4,6 +4,9 @@ namespace InterficiePersistencia
 {
     public interface GestorBDTaller
     {
+
+        bool connexioEstablerta();
+
         /// <summary>
         /// Mètode per verificar si un usuari existeix a la base de dades i si la contrasenya és correcta
         /// </summary>
@@ -27,6 +30,8 @@ namespace InterficiePersistencia
         bool modificarReparacio(Reparacio reparacio);
 
         bool canviarEstatReparacio(Reparacio reparacio, EstatReparacio estat);
+
+        List<Pack> obtenirPacks();
 
         /// <summary>
         /// Tanca la capa de persistència

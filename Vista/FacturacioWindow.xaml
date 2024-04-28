@@ -1,0 +1,62 @@
+﻿<Window x:Class="Vista.FacturacioWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Vista"
+        mc:Ignorable="d"
+        Title="FacturacioWindow" Height="600" Width="900">
+    <Grid Background="#ebf2f2">
+
+        <Grid Margin="30 10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Grid.ColumnSpan="2" Margin="0 0 0 20" Foreground="#3e608c" VerticalAlignment="Center" Content="Facturació" FontWeight="Black" FontSize="23"/>
+
+            <Label HorizontalAlignment="Right" Margin="0 0 30 0" Grid.Row="1" Content="Tipus impositiu"/>
+            <ComboBox SelectionChanged="cbIva_SelectionChanged" x:Name="cbIva" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="130" Grid.Row="1" Grid.Column="1">
+                <ComboBoxItem Tag="21" Content="General (21%)" IsSelected="True"/>
+                <ComboBoxItem Tag="10" Content="Reduït (10%)"/>
+                <ComboBoxItem Tag="4" Content="Reduït (4%)"/>
+            </ComboBox>
+
+
+            <Label HorizontalAlignment="Right" Margin="0 20 30 0" Grid.Row="2" Content="Preu de la ma d'obra"/>
+            <TextBox TextChanged="txbPreuMa_TextChanged" x:Name="txbPreuMa" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="0 20 0 0" Width="130" Grid.Row="2" Grid.Column="1"/>
+
+            <Label HorizontalAlignment="Right" Margin="0 20 30 0" Grid.Row="3" Content="Data"/>
+            <TextBox IsEnabled="False" x:Name="txbData" Grid.Row="3" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="0 20 0 0" Width="130" Grid.Column="1"/>
+
+            <Label HorizontalAlignment="Right" Margin="0 20 30 0" Grid.Row="4" Content="Subtotal"/>
+            <TextBox IsEnabled="False" x:Name="txbSubtotal" Grid.Row="4" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="0 20 0 0" Width="130" Grid.Column="1"/>
+
+            <Label HorizontalAlignment="Right" Margin="0 20 30 0" Grid.Row="5" Content="Import IVA"/>
+            <TextBox IsEnabled="False" x:Name="txbIva" Grid.Row="5" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="0 20 0 0" Width="130" Grid.Column="1"/>
+
+            <Label HorizontalAlignment="Right" Margin="0 20 30 0" Grid.Row="6" Content="Total"/>
+            <TextBox IsEnabled="False" x:Name="txbTotal" Grid.Row="6" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="0 20 0 0" Width="130" Grid.Column="1"/>
+
+
+            <DataGrid GridLinesVisibility="Horizontal" x:Name="dtgLinies" Grid.Column="3" Grid.Row="1" Grid.RowSpan="8" Margin="10" Background="White"/>
+            
+            <Button x:Name="btnFacturar" Click="btnFacturar_Click" Visibility="Collapsed" Grid.Row="8" Grid.ColumnSpan="2" Margin="20" Content="Facturar" Background="#3e608c" Foreground="White" FontWeight="Bold" Width="130" Height="30" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+
+        </Grid>
+
+    </Grid>
+</Window>

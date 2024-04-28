@@ -48,6 +48,9 @@ namespace Vista
                 if (cp == null)
                     throw new GestorBDTallerException();
 
+                if(!cp.connexioEstablerta())
+                    throw new GestorBDTallerException();
+
             }
             catch (GestorBDTallerException)
             {

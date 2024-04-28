@@ -36,7 +36,7 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="Descripció" Width="120"/>
             <TextBox x:Name="txbDescripcio" TextChanged="txbDescripcio_TextChanged" Grid.Column="1" VerticalContentAlignment="Center"/>
-            <ComboBox x:Name="cbDescripcio" SelectionChanged="cbDescripcio_SelectionChanged" Grid.Column="1" VerticalContentAlignment="Center"/>
+            <ComboBox x:Name="cbPacks" SelectionChanged="cbPacks_SelectionChanged" Grid.Column="1" VerticalContentAlignment="Center"/>
         </Grid>
 
         <Grid Margin="10 5" Grid.Row="3">

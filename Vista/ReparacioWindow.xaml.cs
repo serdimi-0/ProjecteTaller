@@ -74,7 +74,7 @@ namespace Vista
                     btnAfegir.Visibility = Visibility.Collapsed;
                     btnFacturar.Visibility = reparacio.Factura == null ? Visibility.Visible : Visibility.Collapsed;
                     btnImprimir.Visibility = reparacio.Factura == null ? Visibility.Collapsed : Visibility.Visible;
-                    btnPagar.Visibility = reparacio.FacturaPagada ? Visibility.Collapsed : Visibility.Visible;
+                    btnPagar.Visibility = reparacio.Estat == EstatReparacio.FACTURADA && reparacio.FacturaPagada ? Visibility.Visible : Visibility.Collapsed;
                 }
             }
 
@@ -216,6 +216,14 @@ namespace Vista
             if (result == MessageBoxResult.No) return;
             cp.canviarEstatReparacio(reparacio, EstatReparacio.REBUTJADA);
             Close();
+        }
+
+        private void btnFacturar_Click(object sender, RoutedEventArgs e)
+        {
+            FacturacioWindow fw = new FacturacioWindow(reparacio);
+            fw.Owner = this;
+            fw.ShowDialog();
+
         }
     }
 }

@@ -23,20 +23,16 @@ namespace Model
         private string? codiFabricant;
         private int? facturaId;
         private int? descompte;
-        private decimal? preuFinal;
+        private decimal? import;
 
         public Linia()
         {
         }
 
-        public Linia(string descripcio, decimal? preu, TipusLinia tipus, int? quantitat, string? codiFabricant, decimal? preuUnitari)
+        public Linia(string descripcio, TipusLinia tipus)
         {
             Descripcio = descripcio;
-            Preu = preu;
             Tipus = tipus;
-            Quantitat = quantitat;
-            CodiFabricant = codiFabricant;
-            PreuUnitari = preuUnitari;
         }
 
         public string Descripcio { get => descripcio; set => descripcio = value; }
@@ -69,12 +65,11 @@ namespace Model
             }
         }
         public int? Quantitat { get => quantitat; set => quantitat = value; }
-        public int? FacturaId { get => facturaId; set => facturaId = value; }
         public string? CodiFabricant { get => codiFabricant; set => codiFabricant = value; }
         public decimal? PreuUnitari { get => preuUnitari; set => preuUnitari = value; }
         public int Numero { get; set; }
         public int? Descompte { get => descompte; set => descompte = value; }
-        public decimal? PreuFinal { get => preuFinal; set => preuFinal = value; }
+        public decimal? Import { get => import; set => import = value; }
 
     }
 }

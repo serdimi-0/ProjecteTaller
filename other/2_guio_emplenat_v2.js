@@ -1,25 +1,30 @@
-db.collections.drop('usuaris');
-db.collections.drop('packs');
-db.collections.drop('clients');
-db.collections.drop('reparacions');
-db.collections.drop('factures');
+db.usuaris.drop();
+db.packs.drop();
+db.clients.drop();
+db.reparacions.drop();
+db.factures.drop();
+db.comptadors.drop();
+db.factures_view.drop();
+
+// Insertem comptadors
+db.comptadors.insertMany([
+  {
+    nom: "factures",
+    valor_ultim: 2,
+  }
+]);
 
 // Insertem usuaris
 db.usuaris.insertMany([
   {
-    login: "admin",
-    password: "admin",
-    tipus: "admin",
-  },
-  {
     login: "mecanic",
-    password: "123",
-    tipus: "mecanic",
+    password: "1234",
+    tipus: "mecanic"
   },
   {
     login: "recepcio",
-    password: "123",
-    tipus: "recepcio",
+    password: "1234",
+    tipus: "recepcio"
   },
 ]);
 
@@ -28,6 +33,10 @@ db.packs.insertMany([
   {
     descripcio: "Revisió general",
     preu: 200,
+  },
+  {
+    descripcio: "ITV",
+    preu: 100,
   }
 ]);
 
@@ -148,7 +157,7 @@ db.clients.insertMany([
         matricula: "303132BCD",
         km: 18000,
         model:
-          "Hyundai TUCSON                  1.6 CRDI 136CV 48V 4X4 DT STYLE",
+          "Hyundai TUCSON 1.6 CRDI 136CV 48V 4X4 DT STYLE",
       },
       {
         matricula: "333435EFG",
@@ -246,13 +255,15 @@ db.reparacions.insertMany([
         preu_unitat: 100,
         quantitat: 4,
         preu: 400,
+        import: 400,
       },
       {
         descripció: "Alineat de direcció",
         tipus: "feina",
         descompte: 20,
         quantitat: 2,
-        preu: 80,
+        preu: 100,
+        import: 80,
       },
     ],
     factura: 1,
@@ -290,7 +301,9 @@ db.reparacions.insertMany([
         descripció: "Canvi de corretja de distribució",
         tipus: "feina",
         quantitat: 4,
+        descompte: 10,
         preu: 240,
+        import: 216,
       },
       {
         descripció: "Kit d'embragatge",
@@ -299,6 +312,7 @@ db.reparacions.insertMany([
         preu_unitat: 350,
         quantitat: 2,
         preu: 700,
+        import: 700,
       },
     ],
     factura: 2,
@@ -314,7 +328,7 @@ db.factures.insertMany([
     numero: 1,
     estat: "pagada",
     data: new Date("2024-02-05"),
-    tipus_IVA: "21%",
+    tipus_IVA: 21,
     preu_ma_obra: 50,
     reparacio_id: reparacio1,
     subtotal: 480,
@@ -325,11 +339,66 @@ db.factures.insertMany([
     numero: 2,
     estat: "pendent",
     data: new Date("2024-02-08"),
-    tipus_IVA: "21%",
+    tipus_IVA: 21,
     preu_ma_obra: 60,
     reparacio_id: reparacio2,
-    subtotal: 1000,
-    import_IVA: 210,
-    total: 1210,
+    subtotal: 916,
+    import_IVA: 192.36,
+    total: 1108.36,
+  },
+]);
+
+// Crear vista que mostri factures amb les dades de la reparació
+db.createView("factures_view", "factures", [
+  {
+    $lookup: {
+      from: "reparacions",
+      localField: "reparacio_id",
+      foreignField: "_id",
+      as: "reparacio",
+    },
+  },
+  {
+    $unwind: "$reparacio",
+  },
+  {
+    $unwind: "$reparacio.linies",
+  },
+  {
+    $lookup: {
+      from: "clients",
+      localField: "reparacio.vehicle_id",
+      foreignField: "vehicles.matricula",
+      as: "client",
+    },
+  },
+  {
+    $unwind: "$client",
+  },
+  {
+    $addFields: {
+      "factura_id": { $toString: "$_id" },
+    },
+  },
+  {
+    $project: {
+      _id: 0,
+      numero: 1,
+      estat: 1,
+      data: 1,
+      tipus_IVA: 1,
+      preu_ma_obra: 1,
+      subtotal: 1,
+      import_IVA: 1,
+      total: 1,
+      "reparacio.vehicle_id": 1,
+      "reparacio.linies": 1,
+      "client.nif": 1,
+      "client.nom": 1,
+      "client.cognoms": 1,
+      "client.telefon": 1,
+      "client.adreça": 1,
+      "factura_id": 1,
+    },
   },
 ]);

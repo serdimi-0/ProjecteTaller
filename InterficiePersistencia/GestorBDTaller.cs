@@ -33,6 +33,8 @@ namespace InterficiePersistencia
 
         List<Pack> obtenirPacks();
 
+        bool insertarFactura(Factura factura);
+
         /// <summary>
         /// Tanca la capa de persistència
         /// </summary>

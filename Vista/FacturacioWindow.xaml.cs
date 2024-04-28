@@ -21,13 +21,15 @@ namespace Vista
     public partial class FacturacioWindow : Window
     {
         Reparacio reparacio;
-        Factura factura;
+        public Factura factura;
         decimal preuMaObra;
+        List<Linia> liniesCopy;
 
         public FacturacioWindow(Reparacio reparacio)
         {
             this.reparacio = reparacio;
             factura = new Factura(reparacio.Id);
+            liniesCopy = new List<Linia>(reparacio.Linies);
             WindowStartupLocation = WindowStartupLocation.CenterOwner;
             InitializeComponent();
         }
@@ -39,6 +41,13 @@ namespace Vista
 
         private void btnFacturar_Click(object sender, RoutedEventArgs e)
         {
+            MessageBoxResult result = MessageBox.Show("Estàs segur que vols facturar aquesta reparació?", "Facturar", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                reparacio.Linies = liniesCopy;
+                DialogResult = true;
+                Close();
+            }
         }
 
         private void calcularCamps()
@@ -49,7 +58,7 @@ namespace Vista
                 preuMaObra = decimal.Parse(txbPreuMa.Text);
 
                 DateTime data = DateTime.Now;
-                decimal subtotal = calcularPreuTotal();
+                decimal subtotal = calcularSubtotal();
                 int tipusIva = int.Parse(((ComboBoxItem)cbIva.SelectedItem).Tag.ToString());
                 decimal iva = subtotal * tipusIva / 100;
                 decimal total = subtotal + iva;
@@ -60,11 +69,18 @@ namespace Vista
                 txbIva.Text = iva.ToString("0.00€");
                 txbTotal.Text = total.ToString("0.00€");
 
-                dtgLinies.ItemsSource = reparacio.Linies.Select(l => new { l.Descripcio, l.Preu, l.Descompte, l.PreuFinal });
+                dtgLinies.ItemsSource = liniesCopy.Select(l => new { l.Descripcio, l.Preu, l.Descompte, l.Import });
                 foreach (DataGridColumn column in dtgLinies.Columns)
                 {
                     column.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
                 }
+
+                factura.Data = data;
+                factura.Subtotal = subtotal;
+                factura.Iva = iva;
+                factura.Total = total;
+                factura.PreuMaObra = preuMaObra;
+                factura.TipusIva = tipusIva;
             }
             else
             {
@@ -76,11 +92,11 @@ namespace Vista
             }
         }
 
-        private decimal calcularPreuTotal()
+        private decimal calcularSubtotal()
         {
             decimal total = 0;
 
-            foreach (Linia linia in reparacio.Linies)
+            foreach (Linia linia in liniesCopy)
             {
                 switch (linia.Tipus)
                 {
@@ -90,16 +106,16 @@ namespace Vista
                     case TipusLinia.PEÇA:
                         linia.Preu = linia.PreuUnitari * linia.Quantitat;
                         break;
+                    // La resta de tipus de linia ja tenen el preu definit
                     case TipusLinia.PACK:
-                        linia.Preu = linia.PreuUnitari * linia.Quantitat;
-                        break;
                     case TipusLinia.ALTRES:
                         break;
                 }
 
+                linia.Descompte = linia.Descompte ?? 0;
 
-                linia.PreuFinal = linia.Preu - linia.Preu * linia.Descompte / 100;
-                total += linia.PreuFinal.Value;
+                linia.Import = linia.Preu - linia.Preu * linia.Descompte / 100;
+                total += linia.Import ?? 0;
             }
 
             return total;
@@ -108,7 +124,7 @@ namespace Vista
 
         private void cbIva_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(cbIva != null && txbPreuMa != null && cbIva.SelectedItem != null)
+            if (cbIva != null && txbPreuMa != null && cbIva.SelectedItem != null)
             {
                 calcularCamps();
             }

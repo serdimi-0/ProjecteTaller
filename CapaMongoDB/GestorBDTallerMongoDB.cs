@@ -57,6 +57,8 @@ namespace CapaMongoDB
             if (usuariBson == null)
                 return null;
             Usuari? usuari = new Usuari(usuariBson["login"].AsString, usuariBson["password"].AsString);
+            if (usuari.Password != password)
+                return null;
             string tipus = usuariBson["tipus"].AsString;
             switch (tipus)
             {
@@ -131,66 +133,58 @@ namespace CapaMongoDB
             int i = 1;
             foreach (var liniaBson in liniesBson)
             {
+                // Omplim els camps que existeixen necessariament
                 string descripcio = liniaBson["descripció"].AsString;
-                decimal? preu;
-                try
-                {
-                    preu = liniaBson["preu"].ToDecimal();
-                }
-                catch (Exception e)
-                {
-                    preu = null;
-                }
-                TipusLinia tipus;
-                int? quantitat;
-                string? codiFabricant;
-                decimal? preuUnitari;
+                Linia l;
                 switch (liniaBson["tipus"].AsString)
                 {
                     case "feina":
-                        tipus = TipusLinia.FEINA;
-                        try
-                        {
-                            quantitat = liniaBson["quantitat"].IsBsonNull ? null : liniaBson["quantitat"].AsInt32;
-                        }
-                        catch (KeyNotFoundException e)
-                        {
-                            quantitat = null;
-                        }
-                        codiFabricant = null;
-                        preuUnitari = null;
+                        l = new Linia(descripcio, TipusLinia.FEINA);
                         break;
                     case "peça":
-                        tipus = TipusLinia.PEÇA;
-                        quantitat = liniaBson["quantitat"].IsBsonNull ? null : liniaBson["quantitat"].AsInt32;
-                        codiFabricant = liniaBson["codi_fabricant"].AsString;
-                        preuUnitari = liniaBson["preu_unitat"].ToDecimal();
+                        l = new Linia(descripcio, TipusLinia.PEÇA);
+                        l.CodiFabricant = liniaBson["codi_fabricant"].AsString;
+                        l.PreuUnitari = liniaBson["preu_unitat"].ToDecimal();
+                        l.Quantitat = liniaBson["quantitat"].AsInt32;
                         break;
                     case "pack":
-                        tipus = TipusLinia.PACK;
-                        quantitat = null;
-                        codiFabricant = null;
-                        preuUnitari = null;
+                        l = new Linia(descripcio, TipusLinia.PACK);
+                        l.Preu = liniaBson["preu"].ToDecimal();
                         break;
                     case "altres":
-                        tipus = TipusLinia.ALTRES;
-                        quantitat = null;
-                        codiFabricant = null;
-                        preuUnitari = null;
+                        l = new Linia(descripcio, TipusLinia.ALTRES);
+                        l.Preu = liniaBson["preu"].ToDecimal();
                         break;
                     default:
                         throw new GestorBDTallerException();
                 }
-                Linia l = new Linia(descripcio, preu, tipus, quantitat, codiFabricant, preuUnitari);
                 l.Numero = i;
+
+                // Omplim els camps opcionals
+                try
+                {
+                    l.Quantitat = liniaBson["quantitat"].AsInt32;
+                }
+                catch (Exception e) { }
+
+                try
+                {
+                    l.Preu = liniaBson["preu"].ToDecimal();
+                }
+                catch (Exception e) { }
+
+                try
+                {
+                    l.Import = liniaBson["import"].ToDecimal();
+                }
+                catch (Exception e) { }
 
                 try
                 {
                     l.Descompte = liniaBson["descompte"].AsInt32;
                 }
-                catch (Exception e)
-                {
-                }
+                catch (Exception e) { }
+
 
 
                 linies.Add(l);
@@ -314,25 +308,30 @@ namespace CapaMongoDB
                     { "descripció", linia.Descripcio },
                     { "tipus", linia.Tipus.ToString().ToLower() }
                 };
-                if (linia.Tipus == TipusLinia.FEINA)
-                {
+                if (linia.Quantitat != null && linia.Quantitat != 0)
                     liniaBson.Add("quantitat", linia.Quantitat);
-                }
-                else if (linia.Tipus == TipusLinia.PEÇA)
-                {
-                    liniaBson.Add("quantitat", linia.Quantitat);
-                    liniaBson.Add("codi_fabricant", linia.CodiFabricant);
-                    liniaBson.Add("preu_unitat", linia.PreuUnitari);
-                }
 
-                if (linia.Preu != null)
+                if (linia.CodiFabricant != null && linia.CodiFabricant != "")
+                    liniaBson.Add("codi_fabricant", linia.CodiFabricant);
+
+                if (linia.PreuUnitari != null && linia.PreuUnitari != 0)
+                    liniaBson.Add("preu_unitat", linia.PreuUnitari);
+
+                if (linia.Preu != null && linia.Preu != 0)
                     liniaBson.Add("preu", linia.Preu);
 
                 if (linia.Descompte != null && linia.Descompte != 0)
                     liniaBson.Add("descompte", linia.Descompte);
 
+                if (linia.Import != null && linia.Import != 0)
+                    liniaBson.Add("import", linia.Import);
+
+
                 liniesBson.Add(liniaBson);
             }
+
+            if (reparacio.Factura != null)
+                reparacioBson.Add("factura", reparacio.Factura);
 
             reparacions.ReplaceOne(new BsonDocument("_id", ObjectId.Parse(reparacio.Id)), reparacioBson);
 
@@ -371,6 +370,38 @@ namespace CapaMongoDB
             }
 
             return list;
+        }
+
+        public bool insertarFactura(Factura factura)
+        {
+            var factures = db.GetCollection<BsonDocument>("factures");
+            var comptadors = db.GetCollection<BsonDocument>("comptadors");
+
+            var comptadorBson = comptadors.Find(new BsonDocument("nom", "factures")).FirstOrDefault();
+            if (comptadorBson == null)
+                throw new GestorBDTallerException();
+
+            int facturaNum = comptadorBson["valor_ultim"].AsInt32 + 1;
+
+
+            BsonDocument facturaBson = new BsonDocument
+            {
+                { "numero", facturaNum },
+                { "estat", "pendent" },
+                { "data", factura.Data },
+                { "tipus_IVA", factura.TipusIva },
+                { "preu_ma_obra", factura.PreuMaObra },
+                { "reparacio_id", ObjectId.Parse(factura.ReparacioId) },
+                { "subtotal", factura.Subtotal },
+                { "import_IVA", factura.Iva },
+                { "total", factura.Total }
+            };
+
+            factures.InsertOne(facturaBson);
+            var update = Builders<BsonDocument>.Update.Set("valor_ultim", facturaNum);
+            comptadors.UpdateOne(new BsonDocument("nom", "factures"), update);
+
+            return true;
         }
 
         private void comprovaConnexió()

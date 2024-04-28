@@ -224,6 +224,14 @@ namespace Vista
             fw.Owner = this;
             fw.ShowDialog();
 
+            if (fw.DialogResult == true)
+            {
+                Factura factura = fw.factura;
+                cp.modificarReparacio(reparacio);
+                cp.insertarFactura(factura);
+                cp.canviarEstatReparacio(reparacio, EstatReparacio.FACTURADA);
+            }
+
         }
     }
 }

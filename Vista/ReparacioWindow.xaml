@@ -97,8 +97,8 @@
                 <StackPanel Grid.Row="3" VerticalAlignment="Bottom">
                     <Button Click="btnTancar_Click" Padding="5" Foreground="White" Margin="5" Background="#3e608c" Content="Tancar reparació" x:Name="btnTancar" Width="150" />
                     <Button Click="btnFacturar_Click" Padding="5" Foreground="White" Margin="5" Background="#3e608c" Content="Facturar reparació" x:Name="btnFacturar" Width="150" />
-                    <Button Visibility="Collapsed" Padding="5" Foreground="White" Margin="5" Background="#3e608c" Content="Marcar com a pagada" x:Name="btnPagar" Width="150" />
-                    <Button Padding="5" Foreground="White" Margin="5" Background="#3e608c" Content="Imprimir factura" x:Name="btnImprimir" Width="150" />
+                    <Button Click="btnPagar_Click" Visibility="Collapsed" Padding="5" Foreground="White" Margin="5" Background="#3e608c" Content="Marcar com a pagada" x:Name="btnPagar" Width="150" />
+                    <Button Click="btnImprimir_Click" Padding="5" Foreground="White" Margin="5" Background="#3e608c" Content="Imprimir factura" x:Name="btnImprimir" Width="150" />
                     <Button Click="btnRebutjar_Click" Padding="5" Foreground="White" Margin="5" Background="#3e608c" Content="Rebutjar reparació" x:Name="btnRebutjar" Width="150" />
                     <Button Click="btnDesar_Click" Padding="5" Foreground="White" Margin="5" Background="#3e608c" Content="Desar reparació" x:Name="btnDesar" Width="150" />
                 </StackPanel> 

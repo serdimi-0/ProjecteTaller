@@ -37,17 +37,17 @@ namespace CapaMongoDB
 
         public void confirmarCanvis()
         {
-            throw new NotImplementedException();
+            // No funcionem amb transaccions
         }
 
         public void desferCanvis()
         {
-            throw new NotImplementedException();
+            // No funcionem amb transaccions
         }
 
         public void tancarCapa()
         {
-            throw new NotImplementedException();
+            con.Cluster.Dispose();
         }
 
         public Usuari? verificarUsuari(string username, string password)
@@ -372,7 +372,7 @@ namespace CapaMongoDB
             return list;
         }
 
-        public bool insertarFactura(Factura factura)
+        public bool insertarFactura(Factura factura, String emissor)
         {
             var factures = db.GetCollection<BsonDocument>("factures");
             var comptadors = db.GetCollection<BsonDocument>("comptadors");
@@ -394,12 +394,41 @@ namespace CapaMongoDB
                 { "reparacio_id", ObjectId.Parse(factura.ReparacioId) },
                 { "subtotal", factura.Subtotal },
                 { "import_IVA", factura.Iva },
-                { "total", factura.Total }
+                { "total", factura.Total },
+                { "emissor", emissor }
             };
 
             factures.InsertOne(facturaBson);
             var update = Builders<BsonDocument>.Update.Set("valor_ultim", facturaNum);
             comptadors.UpdateOne(new BsonDocument("nom", "factures"), update);
+
+            return true;
+        }
+
+        public bool reparacioTeFacturaPagada(Reparacio reparacio)
+        {
+            var factures = db.GetCollection<BsonDocument>("factures");
+
+            var facturaBson = factures.Find(new BsonDocument("reparacio_id", ObjectId.Parse(reparacio.Id))).FirstOrDefault();
+            if (facturaBson == null)
+                return false;
+
+            if (facturaBson["estat"].AsString == "pagada")
+                return true;
+            else
+                return false;
+        }
+
+        public bool pagarFactura(Reparacio reparacio)
+        {
+            var factures = db.GetCollection<BsonDocument>("factures");
+
+            var facturaBson = factures.Find(new BsonDocument("reparacio_id", ObjectId.Parse(reparacio.Id))).FirstOrDefault();
+            if (facturaBson == null)
+                return false;
+
+            var update = Builders<BsonDocument>.Update.Set("estat", "pagada");
+            factures.UpdateOne(new BsonDocument("reparacio_id", ObjectId.Parse(reparacio.Id)), update);
 
             return true;
         }

@@ -334,6 +334,7 @@ db.factures.insertMany([
     subtotal: 480,
     import_IVA: 100.8,
     total: 580.8,
+    emissor: "Taller genèric S.A. Avinguda Definitivament Inventada 29, 08784 Piera. C.I.F. B-123456789"
   },
   {
     numero: 2,
@@ -345,6 +346,7 @@ db.factures.insertMany([
     subtotal: 916,
     import_IVA: 192.36,
     total: 1108.36,
+    emissor: "Taller genèric S.A. Avinguda Definitivament Inventada 29, 08784 Piera. C.I.F. B-123456789"
   },
 ]);
 

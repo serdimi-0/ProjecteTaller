@@ -2,6 +2,7 @@
 using Model;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,6 +44,12 @@ namespace Vista
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            // si la reparacio està facturada, mirem si la factura està pagada
+            if (reparacio.Estat == EstatReparacio.FACTURADA)
+            {
+                reparacio.FacturaPagada = cp.reparacioTeFacturaPagada(reparacio);
+            }
+
             txbEstat.Text = creacio ? "Creació" : reparacio.EstatString;
             txbData.Text = reparacio.DataString;
             txbMatricula.Text = reparacio.VehicleId;
@@ -73,8 +80,8 @@ namespace Vista
                 {
                     btnAfegir.Visibility = Visibility.Collapsed;
                     btnFacturar.Visibility = reparacio.Factura == null ? Visibility.Visible : Visibility.Collapsed;
-                    btnImprimir.Visibility = reparacio.Factura == null ? Visibility.Collapsed : Visibility.Visible;
-                    btnPagar.Visibility = reparacio.Estat == EstatReparacio.FACTURADA && reparacio.FacturaPagada ? Visibility.Visible : Visibility.Collapsed;
+                    btnImprimir.Visibility = reparacio.FacturaPagada ? Visibility.Visible : Visibility.Collapsed;
+                    btnPagar.Visibility = reparacio.FacturaPagada ? Visibility.Collapsed : Visibility.Visible;
                 }
             }
 
@@ -143,6 +150,7 @@ namespace Vista
                 btnFacturar.Visibility = Visibility.Collapsed;
                 btnPagar.Visibility = Visibility.Collapsed;
             }
+            lsvLinies.Items.Refresh();
         }
 
         private void lsvLinies_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -227,10 +235,29 @@ namespace Vista
             if (fw.DialogResult == true)
             {
                 Factura factura = fw.factura;
+                reparacio.Estat = EstatReparacio.FACTURADA;
                 cp.modificarReparacio(reparacio);
-                cp.insertarFactura(factura);
+                cp.insertarFactura(factura, ConfigurationManager.AppSettings["emissor"]);
                 cp.canviarEstatReparacio(reparacio, EstatReparacio.FACTURADA);
+                btnFacturar.Visibility = Visibility.Collapsed;
             }
+            lsvLinies.Items.Refresh();
+
+        }
+
+        private void btnPagar_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Estàs segur que vols marcar la factura com a pagada?", "Pagament de factura", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.No) return;
+            cp.pagarFactura(reparacio);
+            reparacio.FacturaPagada = true;
+            btnPagar.Visibility = Visibility.Collapsed;
+            btnImprimir.Visibility = Visibility.Visible;
+            lsvLinies.Items.Refresh();
+        }
+
+        private void btnImprimir_Click(object sender, RoutedEventArgs e)
+        {
 
         }
     }
